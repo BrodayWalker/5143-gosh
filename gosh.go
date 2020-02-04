@@ -11,7 +11,10 @@ func main() {
 
 	// Main loop
 	for {
+		// Get the command
 		command, args := getCommand()
+
+		// Temporary testing. Prints command & args
 		fmt.Println(command)
 		for _, element := range args {
 			fmt.Println(element)
