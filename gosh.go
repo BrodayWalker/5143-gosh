@@ -8,11 +8,10 @@ import (
 )
 
 func main() {
-
 	// Main loop
 	for {
 		// Get the command
-		command, args := getCommand()
+		command, args := parseCommand(getInput())
 
 		// Temporary testing. Prints command & args
 		fmt.Println(command)
@@ -22,7 +21,7 @@ func main() {
 	}
 }
 
-func getCommand() (string, []string) {
+func getInput() string {
 	// Create a keyboard reader
 	keyboard := bufio.NewReader(os.Stdin)
 	// Read a line of input
@@ -32,6 +31,10 @@ func getCommand() (string, []string) {
 		fmt.Fprintln(os.Stderr, e)
 	}
 	line = strings.Trim(line, "\n")
+	return line
+}
+
+func parseCommand(line string) (string, []string) {
 	// Separate the arguments
 	input := strings.Split(line, " ")
 	command := input[0]
