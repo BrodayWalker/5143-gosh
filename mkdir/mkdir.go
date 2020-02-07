@@ -7,8 +7,10 @@ import (
 )
 
 func main() {
-	//path := ""
-	err := os.Mkdir("test", 755)
+	path := ".\\test"
+	var mode os.FileMode = 0755
+
+	err := os.Mkdir(path, mode)
 
 	fmt.Printf("%T", err)
 
