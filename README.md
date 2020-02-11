@@ -27,5 +27,6 @@ func  NamePrinter() {
 The function ``NamePrinter`` will be visible and usable in other ``.go`` files in the folder without having to import anything.
 ## Building gosh
 Build ``gosh`` from the ``gosh`` folder  with ``go build .`` The result will be an executable called ``gosh.exe`` .
+If ``gosh`` fails to build due to an error locating ``golang.org/x/sys/windows``, run ``go get golang.org/x/sys/windows`` then try to build again.
 ## Running gosh
 Run ``gosh`` with ``./gosh.exe`` .
