@@ -54,14 +54,17 @@ func parseCommand(line string) (string, []string) {
 
 func switchboard(command string, args []string) {
 	// Route the command to call the proper function
+	// All commands are in alphabetical order
 	switch command {
-	case "mkdir":
-		Mkdir(args)
-	case "touch":
-		Touch(args)
 	case "echo":
 		Echo(args)
 	case "exit":
 		os.Exit(0)
+	case "mkdir":
+		Mkdir(args)
+	case "pwd":
+		Pwd(args)
+	case "touch":
+		Touch(args)
 	}
 }
