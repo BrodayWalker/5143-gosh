@@ -59,6 +59,8 @@ func switchboard(command string, args []string) {
 		Mkdir(args)
 	case "touch":
 		Touch(args)
+	case "echo":
+		Echo(args)
 	case "exit":
 		os.Exit(0)
 	}
