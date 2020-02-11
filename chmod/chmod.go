@@ -13,24 +13,37 @@ package main
 
 import (
 	"fmt"
+	//"gopkg.in/src-d/go-git.v4/plumbing/filemode"
 	"log"
 	"os"
-	"strings"
+	//"strings"
+	"golang.org/x/sys/windows"
 )
 
 //chmod u=rwx,g=rx,o=r myfile
 
 func main() {
-	initial := "577 ooga.txt"
-	input := strings.Fields(initial) //split string apart by whitespaces
+	//initial := "577 pooga.txt"
+	// input := strings.Fields(initial) //split string apart by whitespaces
+	// boyo, err := filemode.NewFromOSFileMode(0755)
 	// fmt.Println(string(input[0]))
 	// fmt.Println(string(input[2]))
 	// fmt.Println(string(input[7]))
 	// fmt.Println(strings.Fields(input)[1])
 
-	os.OpenFile("."+input[len(input)-1], os.O_CREATE, 0000)
+	//os.OpenFile("."+input[len(input)-1], os.O_CREATE, os.FileMode(0100755))
 
-	test1, err := os.Lstat("C:\\Users\\Owner\\Desktop\\5143-OS-Matamoros\\5143-gosh\\chmod\\.ooga.txt")
+	windows.Chmod("C:\\Users\\Owner\\Desktop\\5143-OS-Matamoros\\5143-gosh\\chmod\\chmod.exe", 0100222)
+
+	test1, err := os.Lstat("C:\\Users\\Owner\\Desktop\\5143-OS-Matamoros\\5143-gosh\\chmod\\chmod.exe")
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Printf("permissions: %#o\n", test1.Mode().Perm()) //https://golang.org/pkg/os/?m=all#fileStat
+
+	windows.Chmod("C:\\Users\\Owner\\Desktop\\5143-OS-Matamoros\\5143-gosh\\chmod\\chmod.exe", 0100777)
+
+	test1, err = os.Lstat("C:\\Users\\Owner\\Desktop\\5143-OS-Matamoros\\5143-gosh\\chmod\\chmod.exe")
 	if err != nil {
 		log.Fatal(err)
 	}
