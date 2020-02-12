@@ -62,6 +62,8 @@ func switchboard(command string, args []string) {
 		os.Exit(0)
 	case "mkdir":
 		Mkdir(args)
+	case "mv":
+		Mv(args)
 	case "pwd":
 		Pwd(args)
 	case "touch":

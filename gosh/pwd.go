@@ -11,7 +11,11 @@ import (
 func Pwd(args []string) {
 	if len(args) == 0 {
 		// Print the working directory
-		dir, err := sys.GetFullPathName(nil, nil, nil)
-		fmt.Printf(dir)
+		var one, three *uint16
+		var two uint32
+		var four **uint16
+
+		dir, _ := sys.GetFullPathName(one, two, three, four)
+		fmt.Printf("%d", dir)
 	}
 }
