@@ -60,6 +60,8 @@ func switchboard(command string, args []string) {
 		Echo(args)
 	case "exit":
 		os.Exit(0)
+	case "ls":
+		Ls(args)
 	case "mkdir":
 		Mkdir(args)
 	case "mv":
@@ -68,5 +70,7 @@ func switchboard(command string, args []string) {
 		Pwd(args)
 	case "touch":
 		Touch(args)
+	default:
+		fmt.Println("Command not found.")
 	}
 }
