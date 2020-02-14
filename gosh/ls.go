@@ -5,7 +5,8 @@ import (
 	"io/ioutil"
 )
 
-// Ls ...
+// Ls lists all files and directories in a specified folder. Currently, no
+// flags are supported.
 func Ls(args []string) {
 	// ReadDir reads the directory named by dirname and returns a list of
 	// directory entries sorted by filename. The entries are a FileInfo
@@ -20,6 +21,8 @@ func Ls(args []string) {
 				Sys() interface{}   // underlying data source (can return nil)
 			}
 	*/
+
+	// If no arguments, list all file and folder names only
 	if len(args) == 0 {
 		files, _ := ioutil.ReadDir(".\\")
 		for _, file := range files {
