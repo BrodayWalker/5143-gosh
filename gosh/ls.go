@@ -3,11 +3,13 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"regexp"
 )
 
 // Ls lists all files and directories in a specified folder. Currently, no
 // flags are supported.
 func Ls(args []string) {
+
 	// ReadDir reads the directory named by dirname and returns a list of
 	// directory entries sorted by filename. The entries are a FileInfo
 	// object with the following format:
@@ -30,6 +32,37 @@ func Ls(args []string) {
 		}
 		fmt.Printf("\n")
 	} else {
-		fmt.Printf("No arguments to ls are currently supported.\n")
+		// Handle flags
+		// Compile the expression to test against
+		// A flag must be in args[0] or it will not be caught
+		var flags, _ = regexp.Compile(`^-{1,2}(\d|\D)`)
+		if flags.MatchString(args[0]) {
+			// Print flags for testing
+			fmt.Printf("Flags: ")
+			for i := 0; i < len(args); i++ {
+				fmt.Printf(args[i])
+			}
+			fmt.Printf("\n")
+			// -l
+			var l, _ = regexp.Match("l", []byte(args[0]))
+			if l {
+				files, _ := ioutil.ReadDir(".\\")
+				for _, file := range files {
+					// Print permissions
+					fmt.Printf("%s ", file.Mode())
+					// Print owner fields
+
+					// Print size
+					fmt.Printf("%d ", file.Size())
+					// Print date
+					fmt.Printf("%v ", file.ModTime())
+					// Print file/folder name
+					fmt.Printf(file.Name() + " ")
+					fmt.Printf("\n")
+				}
+			}
+		} else {
+
+		}
 	}
 }
