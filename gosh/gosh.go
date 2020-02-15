@@ -68,6 +68,8 @@ func switchboard(command string, args []string) {
 		Mv(args)
 	case "pwd":
 		Pwd(args)
+	case "rm":
+		Rm(args)
 	case "touch":
 		Touch(args)
 	default:
