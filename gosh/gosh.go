@@ -72,6 +72,8 @@ func switchboard(command string, args []string) {
 		Rm(args)
 	case "touch":
 		Touch(args)
+	case "wc":
+		Wc(args)
 	default:
 		fmt.Println("Command not found.")
 	}
