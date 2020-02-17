@@ -60,6 +60,8 @@ func switchboard(command string, args []string) {
 		Echo(args)
 	case "exit":
 		os.Exit(0)
+	case "head":
+		Head(args)
 	case "ls":
 		Ls(args)
 	case "mkdir":
