@@ -26,7 +26,10 @@ func Ls(args []string) {
 
 	// If no arguments, list all file and folder names only
 	if len(args) == 0 {
-		files, _ := ioutil.ReadDir(".\\")
+		files, err := ioutil.ReadDir(".")
+        if err != nil{
+            fmt.Println(err)
+        }
 		for _, file := range files {
 			fmt.Printf(file.Name() + " ")
 		}
@@ -46,7 +49,7 @@ func Ls(args []string) {
 			// -l
 			var l, _ = regexp.Match("l", []byte(args[0]))
 			if l {
-				files, _ := ioutil.ReadDir(".\\")
+				files, _ := ioutil.ReadDir(".")
 				for _, file := range files {
 					// Print permissions
 					fmt.Printf("%s ", file.Mode())

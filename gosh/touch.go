@@ -21,7 +21,7 @@ func Touch(args []string) {
 		fmt.Println("Error: No filename name included.")
 	} else {
 		// Construct path + fileName
-		fileName := "\\" + args[0]
+		fileName := "/" + args[0]
 		path += fileName
 
 		fmt.Printf("Path with filename: %s\n", path)

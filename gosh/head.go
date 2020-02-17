@@ -19,7 +19,7 @@ func Head(args []string) {
 		if ferr != nil {
 			fmt.Println(ferr)
 		} else {
-			fullPath = fullPath + "\\" + filePath
+			fullPath = fullPath + "/" + filePath
 			fmt.Println(fullPath)
 		}
 
