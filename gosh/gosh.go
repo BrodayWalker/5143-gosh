@@ -1,4 +1,4 @@
-package main
+package gosh
 
 import (
 	"bufio"
@@ -72,6 +72,8 @@ func switchboard(command string, args []string) {
 		Pwd(args)
 	case "rm":
 		Rm(args)
+	case "split":
+		Split(args)
 	case "touch":
 		Touch(args)
 	case "wc":

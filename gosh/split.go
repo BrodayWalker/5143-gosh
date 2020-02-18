@@ -1,4 +1,4 @@
-package main
+package gosh
 
 import (
 	"bufio"
@@ -15,7 +15,7 @@ var lines, size, chunks, length, counter int
 
 //Split : split [option] [input [prefix]]
 //example: split -n3 ooga.txt
-func main() {
+func Split(args []string) {
 	input := []string{"-l", "100", "C:\\Users\\Owner\\Desktop\\asdfasdf\\asdf.txt"}
 	fmt.Println(len(input))
 	//loop will iterate through all elements in args

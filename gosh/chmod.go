@@ -1,4 +1,6 @@
-package main
+// +build windows
+
+package gosh
 
 //For this command, the function will receive (hopefully) the portion of the command
 //after 'chmod '. It will process the options by splitting the arguments string
@@ -22,7 +24,7 @@ import (
 
 //chmod u=rwx,g=rx,o=r myfile
 
-func main() {
+func Chmod(args []string) {
 	//initial := "577 pooga.txt"
 	// input := strings.Fields(initial) //split string apart by whitespaces
 	// boyo, err := filemode.NewFromOSFileMode(0755)
