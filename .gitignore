@@ -1,6 +1,7 @@
 # Environmental Files (for editors such as GitPod, VSCode, etc...)
 *.code-workspace
 *.mod
+*.replit
 *.sum
 .vscode/**
 .vs/**
