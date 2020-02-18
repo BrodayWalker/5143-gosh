@@ -1,7 +1,13 @@
-
+# Environmental Files (for editors such as GitPod, VSCode, etc...)
+*.code-workspace
+*.mod
+*.sum
 .vscode/**
-split/.vs/**
+.vs/**
+
+# Executables & Outputs
 *.exe
+*.o
 
 ### Go ###
 # Binaries for programs and plugins
