@@ -38,20 +38,6 @@ func Split(args []string) {
 				input = input[1:]
 			case "b":
 				fmt.Println("This is the b flag!")
-			case "C":
-				fmt.Println("This is the C flag!")
-			case "n":
-				fmt.Println("This is the n flag!")
-			case "a":
-				fmt.Println("This is the a flag!")
-			case "d":
-				fmt.Println("This is the d flag!")
-			case "x":
-				fmt.Println("This is the x flag!")
-			case "t":
-				fmt.Println("This is the t flag!")
-			case "u":
-				fmt.Println("This is the u flag!")
 			default:
 				fmt.Println("Unknown. Exiting.")
 			}
