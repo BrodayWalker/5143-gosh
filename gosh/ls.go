@@ -6,6 +6,11 @@ import (
 	"regexp"
 )
 
+func init(){
+    // Add this command's function to the command mapping
+    ComMap["ls"] = Ls
+}
+
 // Ls lists all files and directories in a specified folder. Currently, no
 // flags are supported.
 func Ls(args []string) {

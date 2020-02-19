@@ -11,6 +11,11 @@ import (
 	// "strings"
 )
 
+func init(){
+    // Add this command's function to the command mapping
+    ComMap["split"] = Split
+}
+
 var lines, size, chunks, length, counter int
 
 //Split : split [option] [input [prefix]]

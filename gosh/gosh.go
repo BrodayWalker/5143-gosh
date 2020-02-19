@@ -8,6 +8,11 @@ import (
 	"strings"
 )
 
+// Treat functions of the given format as a type "Command"
+type Command func(args []string)
+// Create a map of strings (command keys) to Commands (the functions)
+var ComMap = make(map[string]Command)
+
 func main() {
 	// Main loop
 	for {
@@ -19,7 +24,7 @@ func main() {
 		// Standardize command
 		command = strings.ToLower(command)
 		// Match a function
-		switchboard(command, args)
+		execute(command, args)
 	}
 }
 
@@ -52,33 +57,13 @@ func parseCommand(line string) (string, []string) {
 	return command, args
 }
 
-func switchboard(command string, args []string) {
-	// Route the command to call the proper function
-	// All commands are in alphabetical order
-	switch command {
-	case "echo":
-		Echo(args)
-	case "exit":
-		os.Exit(0)
-	case "head":
-		Head(args)
-	case "ls":
-		Ls(args)
-	case "mkdir":
-		Mkdir(args)
-	case "mv":
-		Mv(args)
-	case "pwd":
-		Pwd(args)
-	case "rm":
-		Rm(args)
-	case "split":
-		Split(args)
-	case "touch":
-		Touch(args)
-	case "wc":
-		Wc(args)
-	default:
-		fmt.Println("Command not found.")
-	}
+func execute(command string, args []string) {
+    // Route the command to call the proper function
+    if com, valid := ComMap[command]; valid{
+        com(args)
+    }else if command == "exit"{
+        os.Exit(0)
+    }else{
+        fmt.Println("Command not found.")
+    }
 }

@@ -8,6 +8,11 @@ import (
 	"os"
 )
 
+func init(){
+    // Add this command's function to the command mapping
+    ComMap["mv"] = Mv
+}
+
 // Mv ...
 func Mv(args []string) {
 	// There is a current file (args[0]) and a target name (args[1])

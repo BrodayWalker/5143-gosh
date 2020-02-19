@@ -8,6 +8,11 @@ import (
 	"strings"
 )
 
+func init(){
+    // Add this command's function to the command mapping
+    ComMap["wc"] = Wc
+}
+
 func Wc(args []string) {
 
 	// Files object to store content

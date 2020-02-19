@@ -6,6 +6,11 @@ import (
 	"syscall"
 )
 
+func init(){
+    // Add this command's function to the command mapping
+    ComMap["touch"] = Touch
+}
+
 // Touch ...
 func Touch(args []string) {
 	// Get current working directory

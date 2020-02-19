@@ -8,6 +8,11 @@ import (
 	"syscall"
 )
 
+func init(){
+    // Add this command's function to the command mapping
+    ComMap["mkdir"] = Mkdir
+}
+
 // Mkdir...
 func Mkdir(args []string) {
 	// Get the current working directory
