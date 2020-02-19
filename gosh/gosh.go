@@ -24,7 +24,7 @@ func main() {
 		// Standardize command
 		command = strings.ToLower(command)
 		// Match a function
-		switchboard(command, args)
+		execute(command, args)
 	}
 }
 
@@ -57,7 +57,7 @@ func parseCommand(line string) (string, []string) {
 	return command, args
 }
 
-func switchboard(command string, args []string) {
+func execute(command string, args []string) {
     // Route the command to call the proper function
     if com, valid := ComMap[command]; valid{
         com(args)
