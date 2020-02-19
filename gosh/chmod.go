@@ -22,8 +22,9 @@ import (
 	"golang.org/x/sys/windows"
 )
 
-//chmod u=rwx,g=rx,o=r myfile
-
+//Chmod does not work correctly just yet.
+//Format:
+// 			u=rwx,g=rx,o=r myfile
 func Chmod(args []string) {
 	//initial := "577 pooga.txt"
 	// input := strings.Fields(initial) //split string apart by whitespaces
