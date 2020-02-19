@@ -5,6 +5,11 @@ import (
 	"regexp"
 )
 
+func init(){
+    // Add this command's function to the command mapping
+    ComMap["echo"] = Echo
+}
+
 // Echo ...
 func Echo(args []string) {
 	// Compile the expression to test against

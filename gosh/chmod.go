@@ -22,6 +22,11 @@ import (
 	"golang.org/x/sys/windows"
 )
 
+func init(){
+    // Add this command's function to the command mapping
+    ComMap["chmod"] = Chmod
+}
+
 //chmod u=rwx,g=rx,o=r myfile
 
 func Chmod(args []string) {

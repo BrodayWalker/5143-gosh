@@ -7,6 +7,11 @@ import (
 	"strconv"
 )
 
+func init(){
+    // Add this command's function to the command mapping
+    ComMap["head"] = Head
+}
+
 // Head prints the first 10 lines of a file or the number of lines
 // specified after the -n flag
 func Head(args []string) {
