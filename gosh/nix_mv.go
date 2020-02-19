@@ -1,6 +1,6 @@
 // +build !windows
 
-package gosh
+package main
 
 import (
     "fmt"

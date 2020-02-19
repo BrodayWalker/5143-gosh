@@ -1,6 +1,6 @@
 // +build windows
 
-package gosh
+package main
 
 //For this command, the function will receive (hopefully) the portion of the command
 //after 'chmod '. It will process the options by splitting the arguments string
