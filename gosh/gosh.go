@@ -63,6 +63,22 @@ func execute(command string, args []string) {
         com(args)
     }else if command == "exit"{
         os.Exit(0)
+    }else if command == "test_pipe"{
+
+        // Make a list of command lines just for testing
+        comms := []CommandLine{
+            CommandLine{
+                "cat",
+                []string{"README.md"} },
+            CommandLine{
+                "head",
+                []string{} },
+            CommandLine{
+                "wc",
+                []string{} } }
+        // Run those commands in a pipe
+        PipeLine(comms)
+
     }else{
         fmt.Println("Command not found.")
     }
