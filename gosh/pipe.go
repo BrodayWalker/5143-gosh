@@ -2,10 +2,8 @@ package main
 
 import(
     "io"
-    "io/ioutil"
     "fmt"
     "os"
-    //"path/filepath"
 )
 
 // A command grouped with arguments for calling it
@@ -23,7 +21,6 @@ func PipeLine(commands []CommandLine){
     // stdout backup
     stdout := os.Stdout;
     // Path to the pipe file
-    //outPipePath := filepath.Join(os.TempDir(), "gosh.pipe.tmp")
     dir, err := os.Getwd()
     outPipeName := "gosh.pipe.out.tmp"
     if err != nil {
@@ -40,10 +37,6 @@ func PipeLine(commands []CommandLine){
 
     // For each command in the array
     for i, pipe := range commands {
-
-        // DEBUGGING: Print the command and args set to execute
-        fmt.Println("\n\nSetting up to Execute...")
-        fmt.Println("Command: ", pipe.comm)
 
         // If this isn't the last command
         if i < len(commands) - 1 {
@@ -63,15 +56,6 @@ func PipeLine(commands []CommandLine){
                 // We need to add the pipe file to the args (at the front)
                 pipe.args = frAddStr(pipe.args, inPipeName)
             }
-
-            // DEBUGGING: Print the updated arguments and what the output SHOULD be (w/o  file redirection)
-            backupOut := os.Stdout
-            os.Stdout = stdout
-            fmt.Println("Args: ", pipe.args)
-            fmt.Println("Output: ")
-            com(pipe.args)
-            os.Stdout = backupOut
-
             // Execute the command with its arguments
             com(pipe.args)
             // Move file's pointer back to start of file
@@ -90,21 +74,13 @@ func PipeLine(commands []CommandLine){
 
         // After processing each command, restore stdout
         os.Stdout = stdout
-
         // Copy the output to the input file for the next command
         copyFrom(outPipePath, inPipePath)
 
-        // DEBUGGING: print the current contents of temp file after each command
-        fmt.Println("\nSTATUS OF TEMP FILE\n##############################################")
-        contents, err := ioutil.ReadFile(outPipeName)
-        if err != nil {
-            os.Stdout = stdout
-            fmt.Println("Error opening temp file (for status check): ", err)
-            return
-        }
-        fmt.Println(string(contents))
-
     }
+
+    Rm([]string{inPipePath})
+    Rm([]string{outPipePath})
 
 }
 
