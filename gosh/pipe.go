@@ -14,20 +14,11 @@ func PipeLine(commands []Command){
     
     // stdout backup
     stdout := os.Stdout;
-    // Path to the pipe file
-    dir, err := os.Getwd()
-    outPipeName := "gosh.pipe.out.tmp"
-    if err != nil {
-        fmt.Println("Error getting working directory: ", err)
-        return
-    }
-    outPipePath := dir + "/" + outPipeName
-    inPipeName := "gosh.pipe.in.tmp"
-    if err != nil {
-        fmt.Println("Error getting working directory: ", err)
-        return
-    }
-    inPipePath := dir + "/" + inPipeName
+    // error variable
+    var err error
+    // Path to the pipe file (invisible files)
+    inPipePath := " "
+    outPipePath := "  "
 
     // For each command in the array
     for i, pipe := range commands {
@@ -48,7 +39,7 @@ func PipeLine(commands []Command){
             // If this isn't the first command
             if i > 0{
                 // Add the pipe file to the args (at the front)
-                pipe.args = frAddStr(pipe.args, inPipeName)
+                pipe.args = frAddStr(pipe.args, inPipePath)
             }
             // Execute the command with its arguments
             com(pipe.args)
