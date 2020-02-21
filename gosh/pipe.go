@@ -32,46 +32,31 @@ func PipeLine(commands []CommandLine){
     // For each command in the array
     for i, pipe := range commands {
 
-        // If the command is the last command in the PipeLine
+        // Last command
         if i == len(commands) - 1 {
-
             // Restore stdout
             os.Stdout = stdout
-
-            // If the Command is valid
-            if com, valid := ComMap[pipe.comm]; valid{
-                
-                // If this isn't the first command
-                if i > 0{
-                    // We need to add the pipe file to the args (at the front)
-                    pipe.args = frAddStr(pipe.args, pipeFilePath)
-                }
-
-                // Execute the command with its arguments
-                com(pipe.args)
-            }
-
         }else{
-
+            // Not the last command
             // Before processing each command, open the file and redirect stdout
             os.Stdout, _ = os.Open(pipeFilePath)
+        }
 
-            // If the Command is valid
-            if com, valid := ComMap[pipe.comm]; valid{
-                
-                // If this isn't the first command
-                if i > 0{
-                    // We need to add the pipe file to the args (at the front)
-                    pipe.args = frAddStr(pipe.args, pipeFilePath)
-                }
-
-                // Execute the command with its arguments
-                com(pipe.args)
+        // If the Command is valid
+        if com, valid := ComMap[pipe.comm]; valid{         
+            // If this isn't the first command
+            if i > 0{
+                // We need to add the pipe file to the args (at the front)
+                pipe.args = frAddStr(pipe.args, pipeFilePath)
             }
-
+            // Execute the command with its arguments
+            com(pipe.args)
+        }
+        
+        // Not the last command
+        if i < len(commands) - 1 {
             // After processing each command, close the pipe file
             os.Stdout.Close()
-
         }
 
     }
