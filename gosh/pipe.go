@@ -53,37 +53,33 @@ func PipeLine(commands []CommandLine){
         if com, valid := ComMap[pipe.comm]; valid{         
             // If this isn't the first command
             if i > 0{
-                // We need to add the pipe file to the args (at the front)
+                // Add the pipe file to the args (at the front)
                 pipe.args = frAddStr(pipe.args, inPipeName)
             }
             // Execute the command with its arguments
             com(pipe.args)
-            // Move file's pointer back to start of file
-			os.Stdout.Seek(0, io.SeekStart)
         }
         
-        // If this isn't the last command
+        // After processing each command, if this isn't the last command
         if i < len(commands) - 1 {
-            // After processing each command, close the pipe file
+            // Close the pipe file
             err = os.Stdout.Close()
             if err != nil {
                 fmt.Println("Error closing temp file: ", err)
                 return
             }
         }
-
         // After processing each command, restore stdout
         os.Stdout = stdout
         // Copy the output to the input file for the next command
         copyFrom(outPipePath, inPipePath)
-
     }
-
+    // Remove the temporary files
     Rm([]string{inPipePath})
     Rm([]string{outPipePath})
-
 }
 
+// Add an item to the front of an array of strings
 func frAddStr(argList []string, arg string) []string {
     argList = append(argList, "")
     copy(argList[1:], argList)
@@ -91,7 +87,9 @@ func frAddStr(argList []string, arg string) []string {
     return argList
 }
 
-// File copy borrowed from
+
+// Copy a file from src to dest
+// copy() borrowed from
 // https://opensource.com/article/18/6/copying-files-go
 func copyFrom(src, dst string) (int64, error) {
         sourceFileStat, err := os.Stat(src)
