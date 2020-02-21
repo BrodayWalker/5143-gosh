@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
-	"log"
 	"strconv"
 	"strings"
 )
@@ -15,30 +14,42 @@ func init(){
 
 func Wc(args []string) {
 
+    // Split arguments into files and flags
+    tokens, flags := ArgSplitter(args)
+
 	// Files object to store content
 	files := make(map[string]string)
-	for _, arg := range args {
-		// If the argument is not a flag
-		if arg[0] != '-' {
-			// Read each file
-			content, err := ioutil.ReadFile(arg)
-			// Check for errors
-			if err != nil {
-				log.Fatal(err)
-			}
-			// Store the files contents
-			files[arg] = string(content)
-		}
+	for _, fname := range tokens {
+        // Read each file
+        content, err := ioutil.ReadFile(fname)
+        // Check for errors
+        if err != nil {
+            fmt.Println("Error opening file: ", err)
+        }
+        // Store the files contents
+        files[fname] = string(content)
 	}
+
+    // Check which valid flags are in the array of flags
+    flagKey := make(map[string]bool)
+    for _, flag := range flags {
+        flagKey[flag] = true
+    }
 
 	// Let's start printing them
 	for key, val := range files {
 		lines := strconv.Itoa(len(strings.SplitN(val, "\n", -1)))
 		words := strconv.Itoa(len(strings.SplitN(val, " ", -1)))
 		chars := strconv.Itoa(len(strings.SplitN(val, "", -1)))
-		fmt.Print(lines + " ")
-		fmt.Print(words + " ")
-		fmt.Print(chars + " ")
+        if(len(flags) < 1 || flagKey["l"]){
+		    fmt.Print(lines + " ")
+        }
+        if(len(flags) < 1 || flagKey["w"]){
+		    fmt.Print(words + " ")
+        }
+        if(len(flags) < 1 || flagKey["m"]){
+		    fmt.Print(chars + " ")
+        }
 		fmt.Println(key)
 	}
 
