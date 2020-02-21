@@ -9,9 +9,16 @@ import (
 )
 
 // Treat functions of the given format as a type "Command"
-type Command func(args []string)
+type CommandFunc func(args []string)
+
 // Create a map of strings (command keys) to Commands (the functions)
-var ComMap = make(map[string]Command)
+var ComMap = make(map[string]CommandFunc)
+
+// A command grouped with arguments for calling it
+type Command struct {
+    key string
+    args []string
+}
 
 func main() {
 	// Main loop
@@ -20,11 +27,11 @@ func main() {
 		// The double percent sign must be used to print a literal percent sign
 		fmt.Printf("%% ")
 		// Get the command
-		command, args := parseCommand(getInput())
+		command := parseCommand(getInput())
 		// Standardize command
-		command = strings.ToLower(command)
+		command.key = strings.ToLower(command.key)
 		// Match a function
-		execute(command, args)
+		execute(command)
 	}
 }
 
@@ -48,32 +55,32 @@ func getInput() string {
 	return line
 }
 
-func parseCommand(line string) (string, []string) {
+func parseCommand(line string) Command {
 	// Separate the arguments
 	input := strings.Split(line, " ")
 	command := input[0]
 	args := input[1:]
 	// Return command and arguments
-	return command, args
+	return Command{command, args}
 }
 
-func execute(command string, args []string) {
+func execute(command Command) {
     // Route the command to call the proper function
-    if com, valid := ComMap[command]; valid{
-        com(args)
-    }else if command == "exit"{
+    if com, valid := ComMap[command.key]; valid{
+        com(command.args)
+    }else if command.key == "exit"{
         os.Exit(0)
-    }else if command == "test_pipe"{
+    }else if command.key == "test_pipe"{
 
         // Make a list of command lines just for testing
-        comms := []CommandLine{
-            CommandLine{
+        comms := []Command{
+            Command{
                 "cat",
                 []string{"README.md"} },
-            CommandLine{
+            Command{
                 "head",
                 []string{} },
-            CommandLine{
+            Command{
                 "wc",
                 []string{} } }
         // Run those commands in a pipe

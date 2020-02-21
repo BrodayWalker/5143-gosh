@@ -6,17 +6,11 @@ import(
     "os"
 )
 
-// A command grouped with arguments for calling it
-type CommandLine struct {
-    comm string
-    args []string
-}
-
 // PipeLine
 // Special version of the execute function which takes a list of Commands, then
 // for each Command, sends it's output to a file and uses that file as the first
 // arg of the next command.
-func PipeLine(commands []CommandLine){
+func PipeLine(commands []Command){
     
     // stdout backup
     stdout := os.Stdout;
@@ -50,7 +44,7 @@ func PipeLine(commands []CommandLine){
         }
 
         // If the Command is valid
-        if com, valid := ComMap[pipe.comm]; valid{         
+        if com, valid := ComMap[pipe.key]; valid{         
             // If this isn't the first command
             if i > 0{
                 // Add the pipe file to the args (at the front)
