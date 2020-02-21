@@ -36,7 +36,11 @@ func main() {
             piping := strings.Split(line, "|")
             // If there is any piping, we'll need to make a Command list
             if(len(piping) > 1){
-
+                var pipe []Command
+                for _, command := range piping {
+                    pipe = append(pipe, parseCommand(command))
+                }
+                PipeLine(pipe)
             }else{
                 // If there is no piping, we just need to run the command
                 // Get the command from the line of text
