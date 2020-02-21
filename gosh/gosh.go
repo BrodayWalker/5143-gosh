@@ -26,12 +26,27 @@ func main() {
 		// Print prompt
 		// The double percent sign must be used to print a literal percent sign
 		fmt.Printf("%% ")
-		// Get the command
-		command := parseCommand(getInput())
-		// Standardize command
-		command.key = strings.ToLower(command.key)
-		// Match a function
-		execute(command)
+        // Get the user's input
+        input := getInput()
+        // Split the input by instances of && (multiple commands to run)
+        commandLines := strings.Split(input, "&&")
+        // Run each command line
+        for _, line := range commandLines {
+            // Split each line of input by pipes if necessary
+            piping := strings.Split(line, "|")
+            // If there is any piping, we'll need to make a Command list
+            if(len(piping) > 1){
+
+            }else{
+                // If there is no piping, we just need to run the command
+                // Get the command from the line of text
+                command := parseCommand(line)
+		        // Standardize command
+                command.key = strings.ToLower(command.key)
+                // Execute the command in the standard way
+                execute(command)
+            }
+        }
 	}
 }
 
@@ -57,9 +72,9 @@ func getInput() string {
 
 func parseCommand(line string) Command {
 	// Separate the arguments
-	input := strings.Split(line, " ")
-	command := input[0]
-	args := input[1:]
+	symbols := strings.Split(line, " ")
+	command := symbols[0]
+	args := symbols[1:]
 	// Return command and arguments
 	return Command{command, args}
 }
