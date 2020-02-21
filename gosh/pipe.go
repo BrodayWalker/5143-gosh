@@ -24,7 +24,7 @@ func PipeLine(commands []CommandLine){
     stdout := os.Stdout;
     // Path to the pipe file
     //pipeFilePath := filepath.Join(os.TempDir(), "gosh.pipe.tmp")
-    pipeFilePath := "./gosh.pipe.tmp"
+    pipeFilePath := "gosh.pipe.tmp"
     // Create the actual pipe file
     pipeFile, _ := os.Create(pipeFilePath)
     pipeFile.Close()
@@ -32,12 +32,12 @@ func PipeLine(commands []CommandLine){
     // For each command in the array
     for i, pipe := range commands {
 
-        // Last command
-        if i == len(commands) - 1 {
-            // Restore stdout
-            os.Stdout = stdout
-        }else{
-            // Not the last command
+        // DEBUGGING: Print the command and args set to execute
+        fmt.Println("\n\nSetting up to Execute...")
+        fmt.Println("Command: ", pipe.comm)
+
+        // If this isn't the last command
+        if i < len(commands) - 1 {
             // Before processing each command, open the file and redirect stdout
             os.Stdout, _ = os.Open(pipeFilePath)
         }
@@ -49,15 +49,33 @@ func PipeLine(commands []CommandLine){
                 // We need to add the pipe file to the args (at the front)
                 pipe.args = frAddStr(pipe.args, pipeFilePath)
             }
+
+            // DEBUGGING: Print the updated arguments and what the output SHOULD be (w/o  file redirection)
+            backupOut := os.Stdout
+            os.Stdout = stdout
+            fmt.Println("Args: ", pipe.args)
+            fmt.Println("Output: ")
+            com(pipe.args)
+            os.Stdout = backupOut
+
             // Execute the command with its arguments
             com(pipe.args)
         }
         
-        // Not the last command
+        // If this isn't the last command
         if i < len(commands) - 1 {
             // After processing each command, close the pipe file
-            os.Stdout.Close()
+            err := os.Stdout.Close()
         }
+
+        // After processing each command, restore stdout
+        os.Stdout = stdout
+
+        // DEBUGGING: print the current contents of temp file after each command
+        fmt.Println("\nSTATUS OF TEMP FILE\n##############################################")
+        debugFile, _ := os.Open(pipeFilePath)
+        fmt.Println(debugFile)
+        debugFile.Close()
 
     }
 
