@@ -23,9 +23,16 @@ func PipeLine(commands []CommandLine){
     stdout := os.Stdout;
     // Path to the pipe file
     //pipeFilePath := filepath.Join(os.TempDir(), "gosh.pipe.tmp")
-    pipeFilePath := "gosh.pipe.tmp"
+    pipeFileName := "gosh.pipe.tmp"
+    dir, err := os.Getwd()
+    if err != nil {
+        fmt.Println("Error getting working directory: ", err)
+        return
+    }
+    pipeFilePath := dir + "/" + pipeFileName
+
     // Create the actual pipe file
-    pipeFile, err := os.Create(pipeFilePath)
+    pipeFile, err := os.Create(pipeFileName)
     if err != nil {
         fmt.Println("Error creating temp file: ", err)
         return
@@ -55,7 +62,7 @@ func PipeLine(commands []CommandLine){
             // If this isn't the first command
             if i > 0{
                 // We need to add the pipe file to the args (at the front)
-                pipe.args = frAddStr(pipe.args, pipeFilePath)
+                pipe.args = frAddStr(pipe.args, pipeFileName)
             }
 
             // DEBUGGING: Print the updated arguments and what the output SHOULD be (w/o  file redirection)
@@ -85,7 +92,7 @@ func PipeLine(commands []CommandLine){
 
         // DEBUGGING: print the current contents of temp file after each command
         fmt.Println("\nSTATUS OF TEMP FILE\n##############################################")
-        contents, err := ioutil.ReadFile(pipeFilePath)
+        contents, err := ioutil.ReadFile(pipeFileName)
         if err != nil {
             os.Stdout = stdout
             fmt.Println("Error opening temp file (for status check): ", err)
