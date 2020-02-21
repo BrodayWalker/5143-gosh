@@ -8,7 +8,12 @@ import (
 	"strings"
 )
 
+//list that will hold all commands typed in the terminal
+var commandList []string
+
 func main() {
+	// load the commands history into RAM
+	loadHistory()
 	// Main loop
 	for {
 		// Print prompt
@@ -20,6 +25,17 @@ func main() {
 		command = strings.ToLower(command)
 		// Match a function
 		switchboard(command, args)
+	}
+}
+
+func loadHistory() {
+	historyFile, _ := os.Open("gosh_history")
+	scanner := bufio.NewScanner(historyFile)
+	for scanner.Scan() {
+		commandList = append(commandList, scanner.Text())
+	}
+	for line := range commandList {
+		fmt.Println(commandList[line])
 	}
 }
 
@@ -40,6 +56,9 @@ func getInput() string {
 		line = strings.TrimRight(line, "\n")
 	}
 
+	//append command to the commandList
+	commandList = append(commandList, line)
+
 	return line
 }
 
@@ -56,6 +75,8 @@ func switchboard(command string, args []string) {
 	// Route the command to call the proper function
 	// All commands are in alphabetical order
 	switch command {
+	case "cat":
+		Echo(args)
 	case "echo":
 		Echo(args)
 	case "exit":

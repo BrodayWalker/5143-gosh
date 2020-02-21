@@ -1,0 +1,11 @@
+cd C:/Users/Owner/Desktop/5303-DB-Matamoros
+git remote -v
+git remote set-url git@github.com:Pirhomega/5303-DB-Matamoros.git
+git remote set-url origin git@github.com:Pirhomega/5303-DB-Matamoros.git
+git remote -v
+base -c "clear && docker exec -it db sh"
+bash -c "clear && docker exec -it db sh"
+bash -c "clear && docker exec -it db sh"
+exit
+ll
+cd Release/ALL_BUILD/

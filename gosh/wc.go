@@ -8,6 +8,7 @@ import (
 	"strings"
 )
 
+//Wc ...
 func Wc(args []string) {
 
 	// Files object to store content
@@ -36,5 +37,4 @@ func Wc(args []string) {
 		fmt.Print(chars + " ")
 		fmt.Println(key)
 	}
-
 }
