@@ -1,6 +1,7 @@
 package main
 
 import(
+    "io/ioutil"
     "fmt"
     "os"
     //"path/filepath"
@@ -17,16 +18,18 @@ type CommandLine struct {
 // for each Command, sends it's output to a file and uses that file as the first
 // arg of the next command.
 func PipeLine(commands []CommandLine){
-
-    fmt.Println("PipeLine starting!\nfmt imported for debugging...")
-
+    
     // stdout backup
     stdout := os.Stdout;
     // Path to the pipe file
     //pipeFilePath := filepath.Join(os.TempDir(), "gosh.pipe.tmp")
     pipeFilePath := "gosh.pipe.tmp"
     // Create the actual pipe file
-    pipeFile, _ := os.Create(pipeFilePath)
+    pipeFile, err := os.Create(pipeFilePath)
+    if err != nil {
+        fmt.Println("Error creating temp file: ", err)
+        return
+    }
     pipeFile.Close()
 
     // For each command in the array
@@ -39,7 +42,12 @@ func PipeLine(commands []CommandLine){
         // If this isn't the last command
         if i < len(commands) - 1 {
             // Before processing each command, open the file and redirect stdout
-            os.Stdout, _ = os.Open(pipeFilePath)
+            os.Stdout, err = os.Open(pipeFilePath)
+            if err != nil {
+                os.Stdout = stdout
+                fmt.Println("Error opening temp file: ", err)
+                return
+            }
         }
 
         // If the Command is valid
@@ -65,7 +73,11 @@ func PipeLine(commands []CommandLine){
         // If this isn't the last command
         if i < len(commands) - 1 {
             // After processing each command, close the pipe file
-            err := os.Stdout.Close()
+            err = os.Stdout.Close()
+            if err != nil {
+                fmt.Println("Error closing temp file: ", err)
+                return
+            }
         }
 
         // After processing each command, restore stdout
@@ -73,9 +85,13 @@ func PipeLine(commands []CommandLine){
 
         // DEBUGGING: print the current contents of temp file after each command
         fmt.Println("\nSTATUS OF TEMP FILE\n##############################################")
-        debugFile, _ := os.Open(pipeFilePath)
-        fmt.Println(debugFile)
-        debugFile.Close()
+        contents, err := ioutil.ReadFile(pipeFilePath)
+        if err != nil {
+            os.Stdout = stdout
+            fmt.Println("Error opening temp file (for status check): ", err)
+            return
+        }
+        fmt.Println(string(contents))
 
     }
 
