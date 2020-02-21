@@ -71,6 +71,10 @@ func getInput() string {
 }
 
 func parseCommand(line string) Command {
+    // Trim any leading and trailing spaces resulting from '&&' or '|' splits
+    // This has to be done to process multiple commands. It just does.
+	line = strings.TrimLeft(line, " ")
+	line = strings.TrimRight(line, " ")
 	// Separate the arguments
 	symbols := strings.Split(line, " ")
 	command := symbols[0]
