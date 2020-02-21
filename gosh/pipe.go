@@ -1,6 +1,7 @@
 package main
 
 import(
+    "io"
     "io/ioutil"
     "fmt"
     "os"
@@ -31,14 +32,6 @@ func PipeLine(commands []CommandLine){
     }
     pipeFilePath := dir + "/" + pipeFileName
 
-    // Create the actual pipe file
-    pipeFile, err := os.Create(pipeFileName)
-    if err != nil {
-        fmt.Println("Error creating temp file: ", err)
-        return
-    }
-    pipeFile.Close()
-
     // For each command in the array
     for i, pipe := range commands {
 
@@ -49,7 +42,7 @@ func PipeLine(commands []CommandLine){
         // If this isn't the last command
         if i < len(commands) - 1 {
             // Before processing each command, open the file and redirect stdout
-            os.Stdout, err = os.Open(pipeFilePath)
+            os.Stdout, err = os.OpenFile(pipeFilePath, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0755)
             if err != nil {
                 os.Stdout = stdout
                 fmt.Println("Error opening temp file: ", err)
@@ -75,6 +68,8 @@ func PipeLine(commands []CommandLine){
 
             // Execute the command with its arguments
             com(pipe.args)
+            // Move file's pointer back to start of file
+			os.Stdout.Seek(0, io.SeekStart)
         }
         
         // If this isn't the last command
