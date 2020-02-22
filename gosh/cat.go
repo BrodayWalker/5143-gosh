@@ -19,6 +19,11 @@ var (
 	outputPath string
 )
 
+func init(){
+    // Add this command's function to the command mapping
+    ComMap["cat"] = Cat
+}
+
 // Cat will either concatenate a file and print it to std out or
 // intake two or more files and print them as if they were concatenated.
 // One could also redirect the output to a file.
