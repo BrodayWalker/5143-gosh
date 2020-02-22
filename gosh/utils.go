@@ -16,6 +16,21 @@ func ValidPath(path string) bool {
 	return false
 }
 
+// FileExists checks to see if a file exists at a specified path.
+// If the file exists, FileExists returns true
+func FileExists(file string) bool {
+	fInfo, err := os.Stat(file)
+	// Will evaluate to true if the error is because the file does
+	// not exist
+	if os.IsNotExist(err) {
+		return false
+	}
+	// Will return false (file does not exist) if the string argument
+	// is a directory
+	// Will return true if the file exists and is not a directory
+	return !fInfo.IsDir()
+}
+
 // ArgSplitter separates flags from other arguments and explodes them
 // Regular arguments are returned in an array of strings
 // Flags are returned in exploded for as an array of strings

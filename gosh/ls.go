@@ -6,9 +6,9 @@ import (
 	"regexp"
 )
 
-func init(){
-    // Add this command's function to the command mapping
-    ComMap["ls"] = Ls
+func init() {
+	// Add this command's function to the command mapping
+	ComMap["ls"] = Ls
 }
 
 // Ls lists all files and directories in a specified folder. Currently, no
@@ -32,9 +32,9 @@ func Ls(args []string) {
 	// If no arguments, list all file and folder names only
 	if len(args) == 0 {
 		files, err := ioutil.ReadDir(".")
-        if err != nil{
-            fmt.Println(err)
-        }
+		if err != nil {
+			fmt.Println(err)
+		}
 		for _, file := range files {
 			fmt.Printf(file.Name() + " ")
 		}
@@ -59,7 +59,8 @@ func Ls(args []string) {
 					// Print permissions
 					fmt.Printf("%s ", file.Mode())
 					// Print owner fields
-
+					// This is not implemented as Windows returns -1 for
+					// the group and owner fields
 					// Print size
 					fmt.Printf("%d ", file.Size())
 					// Print date

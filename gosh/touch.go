@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"os"
+	//"os"
 )
 
 func init() {
@@ -12,6 +12,12 @@ func init() {
 
 // Touch ...
 func Touch(args []string) {
+	path := args[0]
+	exists := FileExists(path)
+	fmt.Printf("Answer: %v\n", exists)
+
+	/* TESTING
+
 	// Get current working directory
 	path, err := os.Getwd()
 	if err == nil {
@@ -30,12 +36,7 @@ func Touch(args []string) {
 
 		fmt.Printf("Path with filename: %s\n", path)
 
-		// Hardcoded for testing only
-		//var perms uint32 = 0755
-
-		// Create the file if it does not exist, do not create if the file
-		// does exist
-		//syscall.Open(path, (os.O_CREATE | os.O_EXCL), perms)
+		// Open
 		fp, createErr := os.Create(path)
 		if createErr == nil {
 			fp.Close()
@@ -43,4 +44,7 @@ func Touch(args []string) {
 			fmt.Println("Error creating file.")
 		}
 	}
+
+	END TESTING
+	*/
 }
