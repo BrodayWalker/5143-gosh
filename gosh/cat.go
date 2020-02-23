@@ -69,6 +69,8 @@ func Cat(args []string) {
 				for scanner.Scan() {              //run through the file and print each line to the stdout
 					tempFile.WriteString(scanner.Text() + "\n") //write, instead of straight to stdout or a file, to a temp file
 				}
+                                file.Close()
+
 			}
 		}
 		tempFile.Seek(0, io.SeekStart) //return scanner to the top of tempFile
@@ -76,7 +78,7 @@ func Cat(args []string) {
 		scanner.Split(bufio.ScanLines)
 		if single == true {
 			//opens the read-write file and truncates if successful. Otherwise, it creates the file with rw-rw-rw permissions
-			outfile, _ := os.OpenFile(outputPath, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
+			outfile, _ := os.OpenFile(outputPath, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0755)
 			for scanner.Scan() {
 				outfile.WriteString(scanner.Text() + "\n") // output contents of tempFile to outfile
 			}
