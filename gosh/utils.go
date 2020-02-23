@@ -8,10 +8,20 @@ import (
 	"strings"
 )
 
-// ValidPath checks the validity of a path
+// ValidPath returns true for a valid path
 func ValidPath(path string) bool {
-	_, err := os.Stat(path)
-	if err != nil {
+	fmt.Printf("Relative path: %v\n", path)
+	absPath, fpErr := filepath.Abs(path)
+	// Print error
+	if fpErr != nil {
+		fmt.Println("Absolute path error")
+	} else {
+		fmt.Printf("Absolute path: %v\n", absPath)
+	}
+	// Get FileInfo struct
+	pathInfo, statErr := os.Stat(absPath)
+	// If no error and the path is to a directory
+	if statErr == nil && pathInfo.IsDir() == true {
 		return true
 	}
 	return false
