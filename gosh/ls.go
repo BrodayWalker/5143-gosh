@@ -39,8 +39,10 @@ func Ls(args []string) {
 		path = BuildPathToFile(argList[0])
 		defaultPrint(path)
 	} else if len(argList) == 0 && len(flags) > 0 {
+		// Long print of current working directory
 		longPrint(".")
 	} else if len(argList) > 0 && len(flags) > 0 {
+		// Different path with flags
 		path = BuildPathToFile(argList[0])
 		for _, v := range flags {
 			if v == "l" {
