@@ -28,17 +28,12 @@ func Touch(args []string) {
 				fmt.Println(timeErr)
 			}
 		} else {
-			// If the file does not exist, create it
-			// Ensure path is valid
-			validPath := ValidPath(path)
-			if validPath == true {
-				// Create file
-				fp, createErr := os.Create(path)
-				if createErr == nil {
-					fp.Close()
-				} else {
-					fmt.Println("Error: not a valid path.")
-				}
+			// Attempt to create file
+			fp, createErr := os.Create(path)
+			if createErr == nil {
+				fp.Close()
+			} else {
+				fmt.Println(createErr)
 			}
 		}
 	}
