@@ -8,7 +8,23 @@ import (
 	"strings"
 )
 
-// ValidPathToFile returns true for a valid path
+// ValidPathToDir returns true for a valid path to a directory
+func ValidPathToDir(path string) bool {
+	absPath, fpErr := filepath.Abs(path)
+	// Print error
+	if fpErr != nil {
+		fmt.Println("Absolute path error")
+	}
+	// Get FileInfo struct
+	pathInfo, statErr := os.Stat(absPath)
+	// If no error and the path is to a directory
+	if statErr == nil && pathInfo.IsDir() == true {
+		return true
+	}
+	return false
+}
+
+// ValidPathToFile returns true for a valid path to a file
 func ValidPathToFile(path string) bool {
 	absPath, fpErr := filepath.Abs(path)
 	// Print error
