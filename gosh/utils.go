@@ -27,8 +27,8 @@ func ValidPath(path string) bool {
 	return false
 }
 
-// BuildPathToDir accepts a string path to a file and creates an absolute
-// path to that file.
+// BuildPathToDir accepts a string path to a directory and creates an absolute
+// path to that directory if it exists.
 func BuildPathToDir(path string) string {
 	absPath, fpErr := filepath.Abs(path)
 	// Print error
@@ -42,7 +42,23 @@ func BuildPathToDir(path string) string {
 		fmt.Println(statErr)
 		return ""
 	}
+	return absPath
+}
 
+// BuildPathToFile accepts a string path to a file and creates an absolute
+// path to that file if it exists.
+func BuildPathToFile(path string) string {
+	absPath, fpErr := filepath.Abs(path)
+	// Print error
+	if fpErr != nil {
+		fmt.Println("Absolute path error")
+	}
+	// Get FileInfo struct for our path
+	pathInfo, statErr := os.Stat(absPath)
+	if statErr != nil || pathInfo.IsDir() == true {
+		fmt.Println(statErr)
+		return ""
+	}
 	return absPath
 }
 
