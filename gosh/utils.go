@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"regexp"
 	"strings"
 )
@@ -14,6 +15,26 @@ func ValidPath(path string) bool {
 		return true
 	}
 	return false
+}
+
+// BuildPathToFile accepts a string path to a file and creates an absolute
+// path to that file.
+func BuildPathToFile(path string) string {
+	absPath, fpErr := filepath.Abs(path)
+	// Print error
+	if fpErr != nil {
+		fmt.Println("Absolute path error")
+	}
+	// Get FileInfo struct for our path
+	pathInfo, statErr := os.Stat(absPath)
+	// If path is not valid
+	// Path must exist and must be a directory
+	if statErr != nil || pathInfo.IsDir() == false {
+		fmt.Println(statErr)
+		return ""
+	}
+
+	return absPath
 }
 
 // FileExists checks to see if a file exists at a specified path.

@@ -3,8 +3,6 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
-	"os"
-	"path/filepath"
 	"time"
 )
 
@@ -38,36 +36,18 @@ func Ls(args []string) {
 		defaultPrint(".")
 	} else if len(argList) > 0 && len(flags) == 0 {
 		// Different path than current working directory, no flags passed
-		path = buildPath(argList[0])
+		path = BuildPathToFile(argList[0])
 		defaultPrint(path)
 	} else if len(argList) == 0 && len(flags) > 0 {
 		longPrint(".")
 	} else if len(argList) > 0 && len(flags) > 0 {
-		path = buildPath(argList[0])
+		path = BuildPathToFile(argList[0])
 		for _, v := range flags {
 			if v == "l" {
 				longPrint(path)
 			}
 		}
 	}
-}
-
-func buildPath(path string) string {
-	absPath, fpErr := filepath.Abs(path)
-	// Print error
-	if fpErr != nil {
-		fmt.Println("Absolute path error")
-	}
-	// Get FileInfo struct for our path
-	pathInfo, statErr := os.Stat(absPath)
-	// If path is not valid
-	// Path must exist and must be a directory
-	if statErr != nil || pathInfo.IsDir() == false {
-		fmt.Println(statErr)
-		return ""
-	}
-
-	return absPath
 }
 
 func defaultPrint(path string) {
