@@ -8,20 +8,17 @@ import (
 	"strings"
 )
 
-// ValidPath returns true for a valid path
-func ValidPath(path string) bool {
-	fmt.Printf("Relative path: %v\n", path)
+// ValidPathToFile returns true for a valid path
+func ValidPathToFile(path string) bool {
 	absPath, fpErr := filepath.Abs(path)
 	// Print error
 	if fpErr != nil {
 		fmt.Println("Absolute path error")
-	} else {
-		fmt.Printf("Absolute path: %v\n", absPath)
 	}
 	// Get FileInfo struct
 	pathInfo, statErr := os.Stat(absPath)
 	// If no error and the path is to a directory
-	if statErr == nil && pathInfo.IsDir() == true {
+	if statErr == nil && pathInfo.IsDir() == false {
 		return true
 	}
 	return false
@@ -56,6 +53,24 @@ func BuildPathToFile(path string) string {
 	// Get FileInfo struct for our path
 	pathInfo, statErr := os.Stat(absPath)
 	if statErr != nil || pathInfo.IsDir() == true {
+		fmt.Println(statErr)
+		return ""
+	}
+	return absPath
+}
+
+// BuildPath accepts a string path and builds and absolute path for the
+// given string. BuildPath does not care if the returned path is to a file
+// or a directory.
+func BuildPath(path string) string {
+	absPath, fpErr := filepath.Abs(path)
+	// Print error
+	if fpErr != nil {
+		fmt.Println("Absolute path error")
+	}
+	// Get FileInfo struct for our path
+	_, statErr := os.Stat(absPath)
+	if statErr != nil {
 		fmt.Println(statErr)
 		return ""
 	}
