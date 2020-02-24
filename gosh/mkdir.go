@@ -8,6 +8,11 @@ import (
 	"syscall"
 )
 
+func init(){
+    // Add this command's function to the command mapping
+    ComMap["mkdir"] = Mkdir
+}
+
 // Mkdir makes a new directory. Currently, the only supported functionality
 // includes making a folder in the current directory with a folder name
 // supplied by the user as the first argument.

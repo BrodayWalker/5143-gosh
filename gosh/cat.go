@@ -19,6 +19,11 @@ var (
 	outputPath string
 )
 
+func init() {
+	// Add this command's function to the command mapping
+	ComMap["cat"] = Cat
+}
+
 // Cat will either concatenate a file and print it to std out or
 // intake two or more files and print them as if they were concatenated.
 // One could also redirect the output to a file.
@@ -72,7 +77,7 @@ func Cat(args []string) {
 		scanner.Split(bufio.ScanLines)
 		if single == true {
 			//opens the read-write file and truncates if successful. Otherwise, it creates the file with rw-rw-rw permissions
-			outfile, _ := os.OpenFile(outputPath, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0666)
+			outfile, _ := os.OpenFile(outputPath, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0755)
 			for scanner.Scan() {
 				outfile.WriteString(scanner.Text() + "\n") // output contents of tempFile to outfile
 			}

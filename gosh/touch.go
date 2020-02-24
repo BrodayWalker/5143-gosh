@@ -3,34 +3,38 @@ package main
 import (
 	"fmt"
 	"os"
-	"syscall"
+	"time"
 )
+
+func init() {
+	// Add this command's function to the command mapping
+	ComMap["touch"] = Touch
+}
 
 // Touch ...
 func Touch(args []string) {
-	// Get current working directory
-	path, err := os.Getwd()
-	if err == nil {
-		fmt.Printf("Current path: %s\n", path)
-	} else {
-		fmt.Println("Error finding current working directory.")
-	}
+	// If there is an argument
+	if len(args) != 0 {
+		path := args[0]
+		// Make sure argument is a valid file
+		exists := FileExists(path)
 
-	// Make sure a filename was passed
-	if len(args) == 0 {
-		fmt.Println("Error: No filename name included.")
-	} else {
-		// Construct path + fileName
-		fileName := "/" + args[0]
-		path += fileName
-
-		fmt.Printf("Path with filename: %s\n", path)
-
-		// Hardcoded for testing only
-		var perms uint32 = 0755
-
-		// Create the file if it does not exist, do not create if the file
-		// does exist
-		syscall.Open(path, (os.O_CREATE | os.O_EXCL), perms)
+		// If the file exists, update modification time
+		if exists == true {
+			// Update access and modification times
+			time := time.Now().Local()
+			timeErr := os.Chtimes(path, time, time)
+			if timeErr != nil {
+				fmt.Println(timeErr)
+			}
+		} else {
+			// Attempt to create file
+			fp, createErr := os.Create(path)
+			if createErr == nil {
+				fp.Close()
+			} else {
+				fmt.Println(createErr)
+			}
+		}
 	}
 }

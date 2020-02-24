@@ -8,13 +8,28 @@ import (
 	"strings"
 )
 
-var
-//list that will hold all commands typed in the terminal
-var commandList []string
+var (
+	//list that will hold all commands typed in the terminal
+	commandList []string
 
-// will save the position of latest command saved in
-// command history file
-var whereLeftOff int
+	// will save the position of latest command saved in
+	// command history file
+	whereLeftOff int
+
+	// ComMap with be used to create a map of strings (command keys) to Commands (the functions)
+	ComMap = make(map[string]CommandFunc)
+)
+
+type (
+	// CommandFunc will be used to treat functions of the given format as a type "Command"
+	CommandFunc func(args []string)
+
+	// Command : A command grouped with arguments for calling it
+	Command struct {
+		key  string
+		args []string
+	}
+)
 
 func main() {
 	// loads the command history file contents into RAM
@@ -24,21 +39,37 @@ func main() {
 		// Print prompt
 		// The double percent sign must be used to print a literal percent sign
 		fmt.Printf("%% ")
-		// Get the command
-		line := getInput()
+		// Get the user's input
+		input := getInput()
 		// loads a command into commandList array
-		commandList = append(commandList, line)
-		//parse the command by dividing the arguments and the command word
-		command, args := parseCommand(line)
-		// Standardize command
-		command = strings.ToLower(command)
-		// Match a function
-		switchboard(command, args)
+		commandList = append(commandList, input)
+		// Split the input by instances of && (multiple commands to run)
+		commandLines := strings.Split(input, "&&")
+		// Run each command line
+		for _, line := range commandLines {
+			// Split each line of input by pipes if necessary
+			piping := strings.Split(line, "|")
+			// If there is any piping, we'll need to make a Command list
+			if len(piping) > 1 {
+				var pipe []Command
+				for _, command := range piping {
+					pipe = append(pipe, parseCommand(command))
+				}
+				PipeLine(pipe)
+			} else {
+				// If there is no piping, we just need to run the command
+				// Get the command from the line of text
+				command := parseCommand(line)
+				// Standardize command
+				command.key = strings.ToLower(command.key)
+				// Execute the command in the standard way
+				execute(command)
+			}
+		}
 	}
 }
 
 // loads the contents of gosh_history.tmp into the commandList array
-//
 func loadHistory() {
 	historyFile, _ := os.Open("gosh_history.tmp")
 	scanner := bufio.NewScanner(historyFile)
@@ -73,48 +104,42 @@ func getInput() string {
 	return line
 }
 
-func parseCommand(line string) (string, []string) {
+func parseCommand(line string) Command {
+	// Trim any leading and trailing spaces resulting from '&&' or '|' splits
+	// This has to be done to process multiple commands. It just does.
+	line = strings.TrimLeft(line, " ")
+	line = strings.TrimRight(line, " ")
 	// Separate the arguments
-	input := strings.Split(line, " ")
-	command := input[0]
-	args := input[1:]
+	symbols := strings.Split(line, " ")
+	command := symbols[0]
+	args := symbols[1:]
 	// Return command and arguments
-	return command, args
+	return Command{command, args}
 }
 
-func switchboard(command string, args []string) {
+func execute(command Command) {
 	// Route the command to call the proper function
-	// All commands are in alphabetical order
-	switch command {
-	case "cat":
-		Echo(args)
-	case "echo":
-		Echo(args)
-	case "exit":
-		//upload command history from commandList to gosh_history.tmp
+	if com, valid := ComMap[command.key]; valid {
+		com(command.args)
+	} else if command.key == "exit" {
 		saveHistory()
 		os.Exit(0)
-	case "head":
-		Head(args)
-	case "history":
-		History()
-	case "ls":
-		Ls(args)
-	case "mkdir":
-		Mkdir(args)
-	case "mv":
-		Mv(args)
-	case "pwd":
-		Pwd(args)
-	case "rm":
-		Rm(args)
-	case "split":
-		Split(args)
-	case "touch":
-		Touch(args)
-	case "wc":
-		Wc(args)
-	default:
+	} else if command.key == "test_pipe" {
+		// Make a list of command lines just for testing
+		comms := []Command{
+			Command{
+				"cat",
+				[]string{"README.md"}},
+			Command{
+				"head",
+				[]string{}},
+			Command{
+				"wc",
+				[]string{}}}
+		// Run those commands in a pipe
+		PipeLine(comms)
+
+	} else {
 		fmt.Println("Command not found.")
 	}
 }

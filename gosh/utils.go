@@ -3,17 +3,109 @@ package main
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"regexp"
 	"strings"
 )
 
-// ValidPath checks the validity of a path
-func ValidPath(path string) bool {
-	_, err := os.Stat(path)
-	if err != nil {
+// ValidPathToDir returns true for a valid path to a directory
+func ValidPathToDir(path string) bool {
+	absPath, fpErr := filepath.Abs(path)
+	// Print error
+	if fpErr != nil {
+		fmt.Println("Absolute path error")
+	}
+	// Get FileInfo struct
+	pathInfo, statErr := os.Stat(absPath)
+	// If no error and the path is to a directory
+	if statErr == nil && pathInfo.IsDir() == true {
 		return true
 	}
 	return false
+}
+
+// ValidPathToFile returns true for a valid path to a file
+func ValidPathToFile(path string) bool {
+	absPath, fpErr := filepath.Abs(path)
+	// Print error
+	if fpErr != nil {
+		fmt.Println("Absolute path error")
+	}
+	// Get FileInfo struct
+	pathInfo, statErr := os.Stat(absPath)
+	// If no error and the path is to a directory
+	if statErr == nil && pathInfo.IsDir() == false {
+		return true
+	}
+	return false
+}
+
+// BuildPathToDir accepts a string path to a directory and creates an absolute
+// path to that directory if it exists.
+func BuildPathToDir(path string) string {
+	absPath, fpErr := filepath.Abs(path)
+	// Print error
+	if fpErr != nil {
+		fmt.Println("Absolute path error")
+	}
+	// Get FileInfo struct for our path
+	pathInfo, statErr := os.Stat(absPath)
+	// If path is not valid
+	if statErr != nil || pathInfo.IsDir() == false {
+		fmt.Println(statErr)
+		return ""
+	}
+	return absPath
+}
+
+// BuildPathToFile accepts a string path to a file and creates an absolute
+// path to that file if it exists.
+func BuildPathToFile(path string) string {
+	absPath, fpErr := filepath.Abs(path)
+	// Print error
+	if fpErr != nil {
+		fmt.Println("Absolute path error")
+	}
+	// Get FileInfo struct for our path
+	pathInfo, statErr := os.Stat(absPath)
+	if statErr != nil || pathInfo.IsDir() == true {
+		fmt.Println(statErr)
+		return ""
+	}
+	return absPath
+}
+
+// BuildPath accepts a string path and builds and absolute path for the
+// given string. BuildPath does not care if the returned path is to a file
+// or a directory.
+func BuildPath(path string) string {
+	absPath, fpErr := filepath.Abs(path)
+	// Print error
+	if fpErr != nil {
+		fmt.Println("Absolute path error")
+	}
+	// Get FileInfo struct for our path
+	_, statErr := os.Stat(absPath)
+	if statErr != nil {
+		fmt.Println(statErr)
+		return ""
+	}
+	return absPath
+}
+
+// FileExists checks to see if a file exists at a specified path.
+// If the file exists, FileExists returns true
+func FileExists(file string) bool {
+	fInfo, err := os.Stat(file)
+	// Will evaluate to true if the error is because the file does
+	// not exist
+	if os.IsNotExist(err) {
+		return false
+	}
+	// Will return false (file does not exist) if the string argument
+	// is a directory
+	// Will return true if the file exists and is not a directory
+	return !fInfo.IsDir()
 }
 
 // ArgSplitter separates flags from other arguments and explodes them
