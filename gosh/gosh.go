@@ -121,6 +121,8 @@ func execute(command Command) {
 	// Route the command to call the proper function
 	if com, valid := ComMap[command.key]; valid {
 		com(command.args)
+	} else if command.key == "history" {
+		printHistory()
 	} else if command.key == "exit" {
 		saveHistory()
 		os.Exit(0)
@@ -138,7 +140,6 @@ func execute(command Command) {
 				[]string{}}}
 		// Run those commands in a pipe
 		PipeLine(comms)
-
 	} else {
 		fmt.Println("Command not found.")
 	}
@@ -154,4 +155,10 @@ func saveHistory() {
 		historyFile.WriteString("\n" + commandList[i])
 	}
 	historyFile.Close()
+}
+
+func printHistory() {
+	for i := range commandList {
+		fmt.Println(i, commandList[i])
+	}
 }
