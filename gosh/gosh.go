@@ -8,11 +8,16 @@ import (
 	"strings"
 )
 
+var
 //list that will hold all commands typed in the terminal
 var commandList []string
 
+// will save the position of latest command saved in
+// command history file
+var whereLeftOff int
+
 func main() {
-	// load the commands history into RAM
+	// loads the command history file contents into RAM
 	loadHistory()
 	// Main loop
 	for {
@@ -20,7 +25,11 @@ func main() {
 		// The double percent sign must be used to print a literal percent sign
 		fmt.Printf("%% ")
 		// Get the command
-		command, args := parseCommand(getInput())
+		line := getInput()
+		// loads a command into commandList array
+		commandList = append(commandList, line)
+		//parse the command by dividing the arguments and the command word
+		command, args := parseCommand(line)
 		// Standardize command
 		command = strings.ToLower(command)
 		// Match a function
@@ -28,15 +37,17 @@ func main() {
 	}
 }
 
+// loads the contents of gosh_history.tmp into the commandList array
+//
 func loadHistory() {
-	historyFile, _ := os.Open("gosh_history")
+	historyFile, _ := os.Open("gosh_history.tmp")
 	scanner := bufio.NewScanner(historyFile)
 	for scanner.Scan() {
 		commandList = append(commandList, scanner.Text())
 	}
-	for line := range commandList {
-		fmt.Println(commandList[line])
-	}
+	historyFile.Close()
+	// remember where the commands for this current session begin
+	whereLeftOff = len(commandList)
 }
 
 func getInput() string {
@@ -80,9 +91,13 @@ func switchboard(command string, args []string) {
 	case "echo":
 		Echo(args)
 	case "exit":
+		//upload command history from commandList to gosh_history.tmp
+		saveHistory()
 		os.Exit(0)
 	case "head":
 		Head(args)
+	case "history":
+		History()
 	case "ls":
 		Ls(args)
 	case "mkdir":
@@ -102,4 +117,16 @@ func switchboard(command string, args []string) {
 	default:
 		fmt.Println("Command not found.")
 	}
+}
+
+func saveHistory() {
+	limit := len(commandList)
+	historyFile, _ := os.OpenFile("gosh_history.tmp", os.O_WRONLY|os.O_APPEND, 0)
+	// add only the commands executed during this session to the
+	// gosh history file by starting from the point we saved in
+	// whereLeftOff
+	for i := whereLeftOff; i < limit; i++ {
+		historyFile.WriteString("\n" + commandList[i])
+	}
+	historyFile.Close()
 }

@@ -8,4 +8,5 @@ bash -c "clear && docker exec -it db sh"
 bash -c "clear && docker exec -it db sh"
 exit
 ll
-cd Release/ALL_BUILD/
+12345
+67890

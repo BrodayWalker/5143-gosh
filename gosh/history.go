@@ -9,6 +9,6 @@ import (
 
 // History will print off all the commands used since the inception of
 // the terminal
-func History(args []string) {
+func History() {
 
 }

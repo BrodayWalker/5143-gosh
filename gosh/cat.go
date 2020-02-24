@@ -64,6 +64,7 @@ func Cat(args []string) {
 				for scanner.Scan() {              //run through the file and print each line to the stdout
 					tempFile.WriteString(scanner.Text() + "\n") //write, instead of straight to stdout or a file, to a temp file
 				}
+				file.Close()
 			}
 		}
 		tempFile.Seek(0, io.SeekStart) //return scanner to the top of tempFile
