@@ -12,6 +12,9 @@ var (
 	//list that will hold all commands typed in the terminal
 	commandList []string
 
+	// string that'll hold the command if ! is executed
+	buffer string = ""
+
 	// will save the position of latest command saved in
 	// command history file
 	whereLeftOff int
@@ -74,7 +77,9 @@ func loadHistory() {
 	historyFile, _ := os.Open("gosh_history.tmp")
 	scanner := bufio.NewScanner(historyFile)
 	for scanner.Scan() {
-		commandList = append(commandList, scanner.Text())
+		// append the command from the gosh_history.tmp and remove the
+		// \n
+		commandList = append(commandList, strings.TrimRight(scanner.Text(), "\n"))
 	}
 	historyFile.Close()
 	// remember where the commands for this current session begin
@@ -84,6 +89,8 @@ func loadHistory() {
 func getInput() string {
 	// Create a keyboard reader
 	keyboard := bufio.NewReader(os.Stdin)
+	newIn := bytes.Buffer
+	login := exec.Command
 	// Read a line of input
 	line, e := keyboard.ReadString('\n')
 	// Print out any errors
@@ -97,9 +104,6 @@ func getInput() string {
 	} else {
 		line = strings.TrimRight(line, "\n")
 	}
-
-	//append command to the commandList
-	commandList = append(commandList, line)
 
 	return line
 }
@@ -121,8 +125,8 @@ func execute(command Command) {
 	// Route the command to call the proper function
 	if com, valid := ComMap[command.key]; valid {
 		com(command.args)
-	} else if command.key == "history" {
-		printHistory()
+	} else if string(command.key[0]) == "!" {
+		Exclamation(command.key[1:])
 	} else if command.key == "exit" {
 		saveHistory()
 		os.Exit(0)
@@ -146,19 +150,15 @@ func execute(command Command) {
 }
 
 func saveHistory() {
-	limit := len(commandList)
+	// limit is one minus the length of commandList so to not include
+	// the exit command in the history
+	limit := len(commandList) - 1
 	historyFile, _ := os.OpenFile("gosh_history.tmp", os.O_WRONLY|os.O_APPEND, 0)
 	// add only the commands executed during this session to the
 	// gosh history file by starting from the point we saved in
 	// whereLeftOff
 	for i := whereLeftOff; i < limit; i++ {
-		historyFile.WriteString("\n" + commandList[i])
+		historyFile.WriteString(commandList[i] + "\n")
 	}
 	historyFile.Close()
-}
-
-func printHistory() {
-	for i := range commandList {
-		fmt.Println(i, commandList[i])
-	}
 }
