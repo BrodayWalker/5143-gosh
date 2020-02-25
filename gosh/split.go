@@ -1,3 +1,5 @@
+// +build !windows
+
 package main
 
 import (
@@ -44,7 +46,7 @@ func Split(args []string) {
 				printByLines(lines, args[word])
 				args = args[word:]
 			} else {
-				counter = 0
+				counter := 0
 				file, err = os.Open(args[word]) //open file from input string array
 				if err != nil {
 					log.Fatal(err)
