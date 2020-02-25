@@ -3,37 +3,37 @@
 
 #### Group Members
 
-| Name                          | Email       | Github Username |
-| ----------------------------- | ----------- | --------------- |
-| [Jeremy Glebe](https://github.com/jeremyglebe) | jeremyglebe@gmail.com   | jeremyglebe    |
-| [Corbin Matamoros](https://github.com/Pirhomega) | corbinmatamoros@yahoo.com   | Pirhomega    |
-| [Broday Walker](https://github.com/BrodayWalker) | brodaywalker@gmail.com | BrodayWalker  |
+| Name                                             | Email                     | Github Username |
+| ------------------------------------------------ | ------------------------- | --------------- |
+| [Jeremy Glebe](https://github.com/jeremyglebe)   | jeremyglebe@gmail.com     | jeremyglebe     |
+| [Corbin Matamoros](https://github.com/Pirhomega) | corbinmatamoros@yahoo.com | Pirhomega       |
+| [Broday Walker](https://github.com/BrodayWalker) | brodaywalker@gmail.com    | BrodayWalker    |
 
 #### Project Files
 
-| Command | FileName                    | Author | Works |
-| ------- | --------------------------- | ------ | ----- |
-|         | [README.md](README.md)      | Broday    | :100:   |
-| cat     | [cat.go](gosh/cat.go)            | Corbin    | :100: |
-| cd      | [cd.go](gosh/cd.go)              | Broday    | :100: |
-| chmod   | [chmod.go](gosh/chmod.go)        | Corbin    | :x:   |
-| echo    | [echo.go](gosh/echo.go) | Broday | :100: |
+| Command     | FileName                              | Author | Works |
+| ----------- | ------------------------------------- | ------ | ----- |
+|             | [README.md](README.md)                | Broday | :100: |
+| cat         | [cat.go](gosh/cat.go)                 | Corbin | :100: |
+| cd          | [cd.go](gosh/cd.go)                   | Broday | :100: |
+| chmod       | [chmod.go](gosh/chmod.go)             | Corbin | :x:   |
+| echo        | [echo.go](gosh/echo.go)               | Broday | :100: |
 | exclamation | [exclamation.go](gosh/exclamation.go) | Corbin | :100: |
-|         | [gosh.go](gosh/gosh.go) | All | :100: |
-| head    | [head.go](gosh/head.go) | Broday | :100: |
-| history | [history.go](gosh/history.go) | Corbin | :100: |
-| ls      | [ls.go](gosh/ls.go) | Broday | :100: |
-| mkdir   | [mkdir.go](gosh/mkdir.go) | Broday | :100: |
-| nix_mkdir | [nix_mkdir.go](gosh/nix_mkdir.go) | Jeremy | :100: |
-| nix_mv    | [nix_mv.go](gosh/nix_mv.go) | Jeremy | :100: |
-| pipe      | [pipe.go](gosh/pipe.go) | Jeremy | :100: |
-| pwd       | [pwd.go](gosh/pwd.go) | Broday | :100: |
-| rm        | [rm.go](gosh/rm.go) | Broday | :100: |
-| split     | [split.go](gosh/split.go) | Corbin | :100: |
-| tail      | [tail.go](gosh/tail.go) | Broday | :100: |
-| touch     | [touch.go](gosh/touch.go) | Broday | :100: |
-|           | [utils.go](gosh/utils.go) | Broday | :100: |
-| wc        | [wc.go](gosh/wc.go) | Jeremy | :100: |
+|             | [gosh.go](gosh/gosh.go)               | All    | :100: |
+| head        | [head.go](gosh/head.go)               | Broday | :100: |
+| history     | [history.go](gosh/history.go)         | Corbin | :100: |
+| ls          | [ls.go](gosh/ls.go)                   | Broday | :100: |
+| mkdir       | [mkdir.go](gosh/mkdir.go)             | Broday | :100: |
+| nix_mkdir   | [nix_mkdir.go](gosh/nix_mkdir.go)     | Jeremy | :100: |
+| nix_mv      | [nix_mv.go](gosh/nix_mv.go)           | Jeremy | :100: |
+| pipe        | [pipe.go](gosh/pipe.go)               | Jeremy | :100: |
+| pwd         | [pwd.go](gosh/pwd.go)                 | Broday | :100: |
+| rm          | [rm.go](gosh/rm.go)                   | Broday | :100: |
+| split       | [split.go](gosh/split.go)             | Corbin | 50%  |
+| tail        | [tail.go](gosh/tail.go)               | Broday | :100: |
+| touch       | [touch.go](gosh/touch.go)             | Broday | :100: |
+|             | [utils.go](gosh/utils.go)             | Broday | :100: |
+| wc          | [wc.go](gosh/wc.go)                   | Jeremy | :100: |
 
 #### Directory Structure
 
@@ -45,8 +45,10 @@
 │   ├── cd.go
 │   ├── chmod.go
 │   ├── echo.go
+│   ├── exclamation.go
 │   ├── gosh.go
 │   ├── head.go
+│   ├── history.go
 │   ├── ls.go
 │   ├── mkdir.go
 │   ├── mv.go
