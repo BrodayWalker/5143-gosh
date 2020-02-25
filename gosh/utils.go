@@ -139,7 +139,8 @@ func ArgSplitter(args []string) (argList []string, flags []string) {
 			}
 		}
 	} else {
-		fmt.Println("No args to split")
+		argList = append(argList, "")
+		flags = append(flags, "")
 	}
 
 	return argList, flags
