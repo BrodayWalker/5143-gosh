@@ -18,8 +18,10 @@
 | cd      | [cd.go](gosh/cd.go)              | Broday    | :100: |
 | chmod   | [chmod.go](gosh/chmod.go)        | Corbin    | :x:   |
 | echo    | [echo.go](gosh/echo.go) | Broday | :100: |
+| exclamation | [exclamation.go](gosh/exclamation.go) | Corbin | :100: |
 |         | [gosh.go](gosh/gosh.go) | All | :100: |
 | head    | [head.go](gosh/head.go) | Broday | :100: |
+| history | [history.go](gosh/history.go) | Corbin | :100: |
 | ls      | [ls.go](gosh/ls.go) | Broday | :100: |
 | mkdir   | [mkdir.go](gosh/mkdir.go) | Broday | :100: |
 | nix_mkdir | [nix_mkdir.go](gosh/nix_mkdir.go) | Jeremy | :100: |
