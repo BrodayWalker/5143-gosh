@@ -12,8 +12,14 @@ var (
 	//list that will hold all commands typed in the terminal
 	commandList []string
 
-	// string that'll hold the command if ! is executed
-	buffer string = ""
+	//tmpfile will hold a command queried by the "!" character
+	//oldStdin will remember the traditional Stdin when it is
+	//switched to tmpfile (see 'exclamation.go')
+	//checker is a flag that will signal code in 'getInput()'
+	//to run if "!" is used
+	tmpfile  *os.File
+	oldStdin *os.File = os.Stdin
+	checker  bool     = false
 
 	// will save the position of latest command saved in
 	// command history file
@@ -87,14 +93,29 @@ func loadHistory() {
 }
 
 func getInput() string {
-	// Create a keyboard reader
+	var (
+		line string
+		e    error
+	)
+	// temporarily change Stdin to the temporary file created in exclamation.go,
+	// read in its contents, and execute the result
+	if checker {
+		checker = false
+		//switch to the new Stdin - the temporary file
+		os.Stdin = tmpfile
+	}
+	// Create a keyboard reader, which will either read from the keyboard
+	// or from the temporary file created in the exclamation.go
 	keyboard := bufio.NewReader(os.Stdin)
-	newIn := bytes.Buffer
-	login := exec.Command
-	// Read a line of input
-	line, e := keyboard.ReadString('\n')
+	// Read a line of input from Stdin until carraige return
+	line, e = keyboard.ReadString('\n')
+	//if Stdin was changed, switch back to the original Stdin
+	//if it wasn't changed, oh well. Doing it this way makes for a cleaner
+	//code
+	os.Stdin = oldStdin
 	// Print out any errors
 	if e != nil {
+		fmt.Println("ooga")
 		fmt.Fprintln(os.Stderr, e)
 	}
 
