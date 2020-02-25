@@ -1,5 +1,64 @@
-# 5143-gosh
-This is a repository for ``gosh``, the Go shell implementation for Project 1 in CMPS 5143 - Advanced Operating Systems. The project team members are Jeremy Glebe, Corbin Matamoros, and Broday Walker.
+## Shell Project
+#### Operating Systems Spring 2020
+
+#### Group Members
+
+| Name                          | Email       | Github Username |
+| ----------------------------- | ----------- | --------------- |
+| [Jeremy Glebe](https://github.com/jeremyglebe) | jeremyglebe@gmail.com   | jeremyglebe    |
+| [Corbin Matamoros](https://github.com/Pirhomega) | corbinmatamoros@yahoo.com   | Pirhomega    |
+| [Broday Walker](https://github.com/BrodayWalker) | brodaywalker@gmail.com | BrodayWalker  |
+
+#### Project Files
+
+| Command | FileName                    | Author | Works |
+| ------- | --------------------------- | ------ | ----- |
+|         | [README.md](README.md)      | Broday    | :100:   |
+| cat     | [cat.go](cat.go)            | Corbin    | :100: |
+| cd      | [cd.go](cd.go)              | Broday    | :100: |
+| chmod   | [chmod.go](chmod.go)        | Corbin    | :x:   |
+| echo    | [echo.go](echo.go) | Broday | :100: |
+|         | [gosh.go](gosh.go) | All | :100: |
+| head    | [head.go](head.go) | Broday | :100: |
+| ls      | [ls.go](ls.go) | Broday | :100: |
+| mkdir   | [mkdir.go](mkdir.go) | Broday | :100: |
+| nix_mkdir | [nix_mkdir.go](nix_mkdir.go) | Jeremy | :100: |
+| nix_mv    | [nix_mv.go](nix_mv.go) | Jeremy | :100: |
+| pipe      | [pipe.go](pipe.go) | Jeremy | :100: |
+| pwd       | [pwd.go](pwd.go) | Broday | :100: |
+| rm        | [rm.go](rm.go) | Broday | :100: |
+| split     | [split.go](split.go) | Corbin | :100: |
+| tail      | [tail.go](tail.go) | Broday | :100: |
+| touch     | [touch.go](touch.go) | Broday | :100: |
+|           | [utils.go](utils.go) | Broday | :100: |
+| wc        | [wc.go](wc.go) | Jeremy | :100: |
+
+#### Directory Structure
+
+```
+/5143-gosh
+├── README.md
+├── gosh
+│   ├── cat.go
+│   ├── cd.go
+│   ├── chmod.go
+│   ├── echo.go
+│   ├── gosh.go
+│   ├── head.go
+│   ├── ls.go
+│   ├── mkdir.go
+│   ├── mv.go
+│   ├── nix_mkdir.go
+│   ├── nix_mv.go
+│   ├── pipe.go
+│   ├── pwd.go
+│   ├── rm.go
+│   ├── split.go
+│   ├── tail.go
+│   ├── touch.go
+│   ├── utils.go
+│   ├── wc.go
+```
 
 ## How gosh Works
 Currently, the ``gosh`` folder contains all ``.go`` files. ``gosh.go`` contains the ``main`` function, which is used to accept instructions and call the appropriate ``<command>.go`` file. <br>
