@@ -35,12 +35,8 @@ func Cat(args []string) {
 	//base case, where there are no arguments to the command
 	if len(args) == 0 {
 		reader := bufio.NewReader(os.Stdin)
-		for {
-			ctext, _ := reader.ReadString('\n')
-			//exit condition faulty. Needs more testing at a later date. Use CTRL+C for now.
-			if ctext == "q" {
-				break
-			}
+		for ctext != "q\r\n" {
+			ctext, err = reader.ReadString('\n')
 			fmt.Println(ctext)
 		}
 		//this will run if the Cat command was run with only one argument - a file to print to std out
