@@ -15,23 +15,23 @@
 | ------- | --------------------------- | ------ | ----- |
 |         | [README.md](README.md)      | Broday    | :100:   |
 | cat     | [cat.go](gosh/cat.go)            | Corbin    | :100: |
-| cd      | [cd.go](cd.go)              | Broday    | :100: |
-| chmod   | [chmod.go](chmod.go)        | Corbin    | :x:   |
-| echo    | [echo.go](echo.go) | Broday | :100: |
-|         | [gosh.go](gosh.go) | All | :100: |
-| head    | [head.go](head.go) | Broday | :100: |
-| ls      | [ls.go](ls.go) | Broday | :100: |
-| mkdir   | [mkdir.go](mkdir.go) | Broday | :100: |
-| nix_mkdir | [nix_mkdir.go](nix_mkdir.go) | Jeremy | :100: |
-| nix_mv    | [nix_mv.go](nix_mv.go) | Jeremy | :100: |
-| pipe      | [pipe.go](pipe.go) | Jeremy | :100: |
-| pwd       | [pwd.go](pwd.go) | Broday | :100: |
-| rm        | [rm.go](rm.go) | Broday | :100: |
-| split     | [split.go](split.go) | Corbin | :100: |
-| tail      | [tail.go](tail.go) | Broday | :100: |
-| touch     | [touch.go](touch.go) | Broday | :100: |
-|           | [utils.go](utils.go) | Broday | :100: |
-| wc        | [wc.go](wc.go) | Jeremy | :100: |
+| cd      | [cd.go](gosh/cd.go)              | Broday    | :100: |
+| chmod   | [chmod.go](gosh/chmod.go)        | Corbin    | :x:   |
+| echo    | [echo.go](gosh/echo.go) | Broday | :100: |
+|         | [gosh.go](gosh/gosh.go) | All | :100: |
+| head    | [head.go](gosh/head.go) | Broday | :100: |
+| ls      | [ls.go](gosh/ls.go) | Broday | :100: |
+| mkdir   | [mkdir.go](gosh/mkdir.go) | Broday | :100: |
+| nix_mkdir | [nix_mkdir.go](gosh/nix_mkdir.go) | Jeremy | :100: |
+| nix_mv    | [nix_mv.go](gosh/nix_mv.go) | Jeremy | :100: |
+| pipe      | [pipe.go](gosh/pipe.go) | Jeremy | :100: |
+| pwd       | [pwd.go](gosh/pwd.go) | Broday | :100: |
+| rm        | [rm.go](gosh/rm.go) | Broday | :100: |
+| split     | [split.go](gosh/split.go) | Corbin | :100: |
+| tail      | [tail.go](gosh/tail.go) | Broday | :100: |
+| touch     | [touch.go](gosh/touch.go) | Broday | :100: |
+|           | [utils.go](gosh/utils.go) | Broday | :100: |
+| wc        | [wc.go](gosh/wc.go) | Jeremy | :100: |
 
 #### Directory Structure
 
