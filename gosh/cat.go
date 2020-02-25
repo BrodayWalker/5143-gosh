@@ -16,7 +16,7 @@ var (
 	scanner *bufio.Scanner
 
 	// this string will save the path of the file to which output will be redirected when > or >> are used
-	outputPath string
+	outputPath, ctext string
 )
 
 func init() {
