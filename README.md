@@ -29,7 +29,7 @@
 | pipe        | [pipe.go](gosh/pipe.go)               | Jeremy | :100: |
 | pwd         | [pwd.go](gosh/pwd.go)                 | Broday | :100: |
 | rm          | [rm.go](gosh/rm.go)                   | Broday | :100: |
-| split       | [split.go](gosh/split.go)             | Corbin | 50%  |
+| split       | [split.go](gosh/split.go)             | Corbin | 99% |
 | tail        | [tail.go](gosh/tail.go)               | Broday | :100: |
 | touch       | [touch.go](gosh/touch.go)             | Broday | :100: |
 |             | [utils.go](gosh/utils.go)             | Broday | :100: |
