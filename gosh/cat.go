@@ -19,9 +19,9 @@ var (
 	outputPath string
 )
 
-func init(){
-    // Add this command's function to the command mapping
-    ComMap["cat"] = Cat
+func init() {
+	// Add this command's function to the command mapping
+	ComMap["cat"] = Cat
 }
 
 // Cat will either concatenate a file and print it to std out or
@@ -69,8 +69,7 @@ func Cat(args []string) {
 				for scanner.Scan() {              //run through the file and print each line to the stdout
 					tempFile.WriteString(scanner.Text() + "\n") //write, instead of straight to stdout or a file, to a temp file
 				}
-                                file.Close()
-
+				file.Close()
 			}
 		}
 		tempFile.Seek(0, io.SeekStart) //return scanner to the top of tempFile
