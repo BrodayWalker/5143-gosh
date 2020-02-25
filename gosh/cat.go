@@ -16,6 +16,7 @@ var (
 	scanner *bufio.Scanner
 
 	// this string will save the path of the file to which output will be redirected when > or >> are used
+	// and ctext will hold strings typed into standard in when 'cat' is called with no arguments
 	outputPath, ctext string
 )
 
@@ -36,7 +37,7 @@ func Cat(args []string) {
 	if len(args) == 0 {
 		reader := bufio.NewReader(os.Stdin)
 		for ctext != "q\r\n" {
-			ctext, err = reader.ReadString('\n')
+			ctext, _ = reader.ReadString('\n')
 			fmt.Println(ctext)
 		}
 		//this will run if the Cat command was run with only one argument - a file to print to std out

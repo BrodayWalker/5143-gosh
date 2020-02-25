@@ -5,6 +5,7 @@
 *.sum
 .vscode/**
 .vs/**
+tester/
 
 # Executables & Outputs
 *.exe
@@ -57,3 +58,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+tester/history.go

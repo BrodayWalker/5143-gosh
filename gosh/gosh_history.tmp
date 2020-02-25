@@ -50,3 +50,8 @@ cat ls.go
 rm cat.exe
 !2
 ls
+split 
+split
+split C:/Users/Owner/Desktop/5143-gosh/tester/history.go
+split C:/Users/Owner/Desktop/5143-gosh/gosh/history.go
+split history.go
