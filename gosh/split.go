@@ -22,7 +22,7 @@ var lines, size, chunks, length, counter int
 //example: split -n3 ooga.txt
 func Split(args []string) {
 	//loop will iterate through all elements in args
-	for word := range args && word < len(args) {
+	for word := range args {
 		fmt.Println(word)
 		//switch cases will only cover single-dashed flags for now
 		switch string(args[word][0]) {
