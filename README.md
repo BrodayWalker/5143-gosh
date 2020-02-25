@@ -14,7 +14,7 @@
 | Command | FileName                    | Author | Works |
 | ------- | --------------------------- | ------ | ----- |
 |         | [README.md](README.md)      | Broday    | :100:   |
-| cat     | [cat.go](cat.go)            | Corbin    | :100: |
+| cat     | [cat.go](gosh/cat.go)            | Corbin    | :100: |
 | cd      | [cd.go](cd.go)              | Broday    | :100: |
 | chmod   | [chmod.go](chmod.go)        | Corbin    | :x:   |
 | echo    | [echo.go](echo.go) | Broday | :100: |
