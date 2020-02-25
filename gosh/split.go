@@ -11,9 +11,9 @@ import (
 	// "strings"
 )
 
-func init(){
-    // Add this command's function to the command mapping
-    ComMap["split"] = Split
+func init() {
+	// Add this command's function to the command mapping
+	ComMap["split"] = Split
 }
 
 var lines, size, chunks, length, counter int
@@ -21,43 +21,43 @@ var lines, size, chunks, length, counter int
 //Split : split [option] [input [prefix]]
 //example: split -n3 ooga.txt
 func Split(args []string) {
-	input := []string{"-l", "100", "C:\\Users\\Owner\\Desktop\\asdfasdf\\asdf.txt"}
-	fmt.Println(len(input))
 	//loop will iterate through all elements in args
-	for word := range input {
+	for word := range args {
 		//switch cases will only cover single-dashed flags for now
-		switch string(input[word][0]) {
+		switch string(args[word][0]) {
 		case "-":
-			fmt.Println(word)
-			switch string(input[word][1]) {
+			fmt.Println(args[word])
+			switch string(args[word][1]) {
 			case "l":
-				fmt.Println(input[word+1])
+				fmt.Println(args[word+1])
 				//grabbing the number of lines of text to put in each child file
-				lines, _ = strconv.Atoi(input[word+1])
+				lines, _ = strconv.Atoi(args[word+1])
 				//slice off the processed flag and associated lines value
-				input = input[1:]
+				args = args[1:]
 			case "b":
 				fmt.Println("This is the b flag!")
 			default:
 				fmt.Println("Unknown. Exiting.")
 			}
 		default:
+			fmt.Println(args[word])
 			//if the lines flag was waved
 			if lines != 0 {
 				fmt.Println("finna run lines code yeet")
-				printByLines(lines, input[word])
+				printByLines(lines, args[word])
 			} else {
 				fmt.Println("Ran default!")
 				counter = 0
-				file, err := os.Open(input[word]) //open file from input string array
+				file, err := os.Open(args[word]) //open file from input string array
 				if err != nil {
 					log.Fatal(err)
 				}
+				fi, _ := file.Stat()
 				//this variable will hold the sections of data we will be writing to separate files
-				data := make([]byte, 100)
-				for {
+				data := make([]byte, fi.Size())
+				for counter < 100 {
 					//create a "sub-file" with the same name as the parent but with a counter value appended to the front
-					file2, err := os.Create(strconv.Itoa(counter) + filepath.Base(input[word]))
+					file2, err := os.Create(strconv.Itoa(counter) + filepath.Base(args[word]))
 					if err != nil {
 						log.Fatal(err)
 					}
