@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"strconv"
 	"time"
 )
 
@@ -40,18 +41,55 @@ func Ls(args []string) {
 		defaultPrint(path)
 	} else if len(argList) == 0 && len(flags) > 0 {
 		// Long print of current working directory
-		longPrint(".")
+		// Parse a flag or two
+		lFlag, hFlag := parseFlags(flags)
+
+		if lFlag == true && hFlag == false {
+			// If long listing, not human readable
+			longPrint(".", false)
+		} else if lFlag == true && hFlag == true {
+			// If long listing, human readable
+			longPrint(".", true)
+		}
 	} else if len(argList) > 0 && len(flags) > 0 {
-		// Different path with flags
+		// Different path with flags, build path to directory
 		path = BuildPathToDir(argList[0])
-		for _, v := range flags {
-			if v == "l" {
-				longPrint(path)
-			}
+
+		// Find which flags are present (returns a boolean for each flag)
+		lFlag, hFlag := parseFlags(flags)
+
+		// Long listing, not human readable
+		if lFlag == true && hFlag == false {
+			longPrint(path, false)
+		} else if lFlag == true && hFlag == true {
+			// Long listing, human readable
+			longPrint(path, true)
+		} else {
+			// You don't know what you want, you get a long listing
+			// and you will like it.
+			longPrint(path, false)
 		}
 	}
 }
 
+// parseFlags checks for -l and -h
+func parseFlags(flags []string) (bool, bool) {
+	lFlag := false
+	hFlag := false
+	// Loop through flag array
+	for _, v := range flags {
+		if v == "l" {
+			lFlag = true
+		}
+		if v == "h" {
+			hFlag = true
+		}
+	}
+	return lFlag, hFlag
+}
+
+// defaultPrint is the vanilla ice cream of prints. It lists files
+// and directories.
 func defaultPrint(path string) {
 	files, err := ioutil.ReadDir(path)
 	if err != nil {
@@ -63,21 +101,81 @@ func defaultPrint(path string) {
 	fmt.Printf("\n")
 }
 
-func longPrint(path string) {
+// longPrint prints a long listing. If the second argument is true, a long
+// listing is printed with sizes in human-readable format.
+func longPrint(path string, human bool) {
 	files, _ := ioutil.ReadDir(path)
-	for _, file := range files {
-		// Print permissions
-		fmt.Printf("%s ", file.Mode())
-		// Print owner fields
-		// This is not implemented as Windows returns -1 for
-		// the group and owner fields
-		// Print size
-		fmt.Printf("%12d ", file.Size())
-		// Print date
-		t := file.ModTime()
-		fmt.Printf("%v ", t.Format(time.UnixDate))
-		// Print file/folder name
-		fmt.Printf(file.Name() + " ")
-		fmt.Printf("\n")
+
+	// Long listing, not human readable
+	if human == false {
+		for _, file := range files {
+			// Print permissions
+			fmt.Printf("%s ", file.Mode())
+			// Print owner fields
+			// This is not implemented as Windows returns -1 for
+			// the group and owner fields
+			// Print size
+			fmt.Printf("%12d ", file.Size())
+			// Print date
+			t := file.ModTime()
+			fmt.Printf("%v ", t.Format(time.UnixDate))
+			// Print file/folder name
+			fmt.Printf(file.Name() + " ")
+			fmt.Printf("\n")
+		}
+	} else {
+		// Long listing, human readable
+		for _, file := range files {
+			// Print permissions
+			fmt.Printf("%s ", file.Mode())
+
+			// Print owner fields
+			// This is not implemented as Windows returns -1 for
+			// the group and owner fields
+
+			// Convert file size format
+			formatSize := divide(file.Size())
+			// Print size
+			fmt.Printf("%6s ", formatSize)
+
+			// Print date
+			t := file.ModTime()
+			fmt.Printf("%v ", t.Format(time.UnixDate))
+			// Print file/folder name
+			fmt.Printf(file.Name() + " ")
+			fmt.Printf("\n")
+		}
 	}
+}
+
+// divide finds the number of divisions needed to get a file size below
+// 1024. Example: if a file size in bytes takes 3 divisions to get below 1024,
+// the file is 1 or more gigabytes. The returned string is formatted with some
+// order of magnitude (ex: 1GB)
+func divide(size int64) string {
+	count := 0
+	for size > 1024 {
+		size /= 1024
+		count++
+	}
+
+	// Convert size to a string
+	fSize := strconv.Itoa(int(size))
+
+	switch count {
+	case 0:
+		fSize += "B"
+	case 1:
+		fSize += "KB"
+	case 2:
+		fSize += "MB"
+	case 3:
+		fSize += "GB"
+	case 4:
+		fSize += "TB"
+	case 5:
+		fSize += "PB"
+	}
+
+	return fSize
 }
