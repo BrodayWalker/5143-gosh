@@ -8,9 +8,9 @@ import (
 	"syscall"
 )
 
-func init(){
-    // Add this command's function to the command mapping
-    ComMap["mkdir"] = Mkdir
+func init() {
+	// Add this command's function to the command mapping
+	ComMap["mkdir"] = Mkdir
 }
 
 // Mkdir makes a new directory. Currently, the only supported functionality
@@ -34,15 +34,16 @@ func Mkdir(args []string) {
 		// The folder name should be argument 0
 		folderName := args[0]
 		// Construct absolute path
-		totalPath := path + "\\" + folderName
+		totalPath := path + "/" + folderName
 
 		// Print path for testing
 		fmt.Println(totalPath)
 
 		// Convert string totalPath to a *uint16
-		totalPathPtr := syscall.StringToUTF16Ptr(totalPath)
+		// totalPathPtr := syscall.StringToUTF16Ptr(totalPath)
 		// Make the directory using the Windows CreateDirectory system call
-		errPath := syscall.CreateDirectory(totalPathPtr, nil)
+		// errPath := syscall.Mkdirat(_AT_FDCWD, totalPathPtr, 0755)
+		errPath := syscall.Mkdir(totalPath, 0755)
 
 		if errPath == syscall.ERROR_ALREADY_EXISTS {
 			fmt.Println("Directory already exists.")
