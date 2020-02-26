@@ -6,6 +6,7 @@ import (
 	"io"
 	"os"
 	"regexp"
+    "strings"
 )
 
 func init() {
@@ -14,10 +15,15 @@ func init() {
 }
 
 func Grep(args []string) {
+    // Merge any quoted arguments
+    args = MergeQuotedArgs(args)
 	// Split arguments into regexp, files and flags
 	tokens, flags := ArgSplitter(args)
 	expr := tokens[0]
 	files := tokens[1:]
+	// Trim the quotes as Go's re library doesn't use them
+	expr = strings.TrimLeft(expr, "\"")
+	expr = strings.TrimRight(expr, "\"")
 
 	// Check which valid flags are in the array of flags
 	flagKey := make(map[string]bool)
