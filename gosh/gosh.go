@@ -175,7 +175,7 @@ func parseCommand(line string) Command {
 	return Command{command, args, ifile, ofile, appendMode}
 }
 
-// Execute
+// Execute ..
 // Runs a command if it is a valid command defined in the ComMap
 // or if it is one of a few special commands such as `exit`.
 // Notes:

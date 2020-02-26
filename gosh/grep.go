@@ -6,7 +6,7 @@ import (
 	"io"
 	"os"
 	"regexp"
-    "strings"
+	"strings"
 )
 
 func init() {
@@ -14,9 +14,10 @@ func init() {
 	ComMap["grep"] = Grep
 }
 
+//Grep ..
 func Grep(args []string) {
-    // Merge any quoted arguments
-    args = MergeQuotedArgs(args)
+	// Merge any quoted arguments
+	args = MergeQuotedArgs(args)
 	// Split arguments into regexp, files and flags
 	tokens, flags := ArgSplitter(args)
 	expr := tokens[0]
