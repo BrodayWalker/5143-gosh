@@ -5,6 +5,7 @@
 *.sum
 .vscode/**
 .vs/**
+tester/
 
 # Executables & Outputs
 *.exe
@@ -20,6 +21,9 @@
 
 # Test binary, built with `go test -c`
 *.test
+
+# Temporary files
+*.tmp
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
@@ -57,3 +61,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+tester/history.go

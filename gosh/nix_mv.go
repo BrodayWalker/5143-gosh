@@ -24,8 +24,8 @@ func Mv(args []string) {
 		if pathErr != nil {
 			fmt.Printf("%v\n", pathErr)
 		} else {
-			oldPath := wd + "\\" + args[0]
-			newPath := wd + "\\" + args[1]
+			oldPath := wd + "/" + args[0]
+			newPath := wd + "/" + args[1]
 
             // Open the original file
             inputFile, openErr := os.Open(oldPath)
