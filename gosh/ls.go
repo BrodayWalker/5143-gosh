@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"strconv"
 	"time"
+	"regexp"
 )
 
 func init() {
@@ -34,48 +35,56 @@ func Ls(args []string) {
 
 	// If no arguments, list all file and folder names only
 	if len(argList) == 0 && len(flags) == 0 {
-		defaultPrint(".")
+		defaultPrint(".", false)
 	} else if len(argList) > 0 && len(flags) == 0 {
 		// Different path than current working directory, no flags passed
 		path = BuildPathToDir(argList[0])
-		defaultPrint(path)
-	} else if len(argList) == 0 && len(flags) > 0 {
-		// Long print of current working directory
-		// Parse a flag or two
-		lFlag, hFlag := parseFlags(flags)
-
-		if lFlag == true && hFlag == false {
-			// If long listing, not human readable
-			longPrint(".", false)
-		} else if lFlag == true && hFlag == true {
-			// If long listing, human readable
-			longPrint(".", true)
+		defaultPrint(path, false)
+	} else {
+		// Print files in current folder
+		if len(argList) == 0 {
+			path = "."
+		} else {
+			// Different path
+			path = argList[0]
 		}
-	} else if len(argList) > 0 && len(flags) > 0 {
-		// Different path with flags, build path to directory
-		path = BuildPathToDir(argList[0])
+		// Build path to directory
+		path = BuildPathToDir(path)
 
 		// Find which flags are present (returns a boolean for each flag)
-		lFlag, hFlag := parseFlags(flags)
+		lFlag, hFlag, aFlag := parseFlags(flags)
 
-		// Long listing, not human readable
-		if lFlag == true && hFlag == false {
-			longPrint(path, false)
-		} else if lFlag == true && hFlag == true {
-			// Long listing, human readable
-			longPrint(path, true)
-		} else {
-			// You don't know what you want, you get a long listing
-			// and you will like it.
-			longPrint(path, false)
+		// It's ugly but it handles all the flag permutations
+		if lFlag == true && hFlag == false && aFlag == false{
+			// -l
+			longPrint(path, false, false)
+		} else if lFlag == true && hFlag == true && aFlag == false {
+			// -lh
+			longPrint(path, true, false)
+		} else if lFlag == true && hFlag == false && aFlag == true {
+			// -la
+			longPrint(path, false, true)
+		} else if lFlag == true && hFlag == true && aFlag == true {
+			// -lha
+			longPrint(path, true, true)
+		} else if lFlag == false && hFlag == false && aFlag == true {
+			// -a
+			defaultPrint(path, true)
+		} else if lFlag == false && hFlag == true && aFlag == false {
+			// -h
+			defaultPrint(path, false)
+		} else if lFlag == false && hFlag == true && aFlag == true {
+			// -ah
+			defaultPrint(path, true)
 		}
 	}
 }
 
 // parseFlags checks for -l and -h
-func parseFlags(flags []string) (bool, bool) {
+func parseFlags(flags []string) (bool, bool, bool) {
 	lFlag := false
 	hFlag := false
+	aFlag := false
 	// Loop through flag array
 	for _, v := range flags {
 		if v == "l" {
@@ -84,66 +93,129 @@ func parseFlags(flags []string) (bool, bool) {
 		if v == "h" {
 			hFlag = true
 		}
+		if v == "a" {
+			aFlag = true
+		}
 	}
-	return lFlag, hFlag
+	return lFlag, hFlag, aFlag
 }
 
 // defaultPrint is the vanilla ice cream of prints. It lists files
 // and directories.
-func defaultPrint(path string) {
+func defaultPrint(path string, all bool) {
+	hiddenFile := regexp.MustCompile(`^[.]+`)
 	files, err := ioutil.ReadDir(path)
 	if err != nil {
 		fmt.Println(err)
 	}
-	for _, file := range files {
-		fmt.Printf(file.Name() + " ")
+	// -a prints all files, including hidden files
+	if all == true {
+		for _, file := range files {
+			fmt.Printf(file.Name() + " ")
+		}
+	} else {
+		// no -a, don't print hidden files
+		for _, file := range files {
+			if !hiddenFile.MatchString(file.Name()) {
+				fmt.Printf(file.Name() + " ")
+			}
+		}
 	}
+	
 	fmt.Printf("\n")
 }
 
 // longPrint prints a long listing. If the second argument is true, a long
 // listing is printed with sizes in human-readable format.
-func longPrint(path string, human bool) {
+func longPrint(path string, human bool, all bool) {
 	files, _ := ioutil.ReadDir(path)
+	hiddenFile := regexp.MustCompile(`^[.]+`)
 
 	// Long listing, not human readable
 	if human == false {
-		for _, file := range files {
-			// Print permissions
-			fmt.Printf("%s ", file.Mode())
-			// Print owner fields
-			// This is not implemented as Windows returns -1 for
-			// the group and owner fields
-			// Print size
-			fmt.Printf("%12d ", file.Size())
-			// Print date
-			t := file.ModTime()
-			fmt.Printf("%v ", t.Format(time.UnixDate))
-			// Print file/folder name
-			fmt.Printf(file.Name() + " ")
-			fmt.Printf("\n")
+		if all == true {
+			// Print all files 
+			for _, file := range files {
+				// Print permissions
+				fmt.Printf("%s ", file.Mode())
+				// Print owner fields
+				// This is not implemented as Windows returns -1 for
+				// the group and owner fields
+				// Print size
+				fmt.Printf("%12d ", file.Size())
+				// Print date
+				t := file.ModTime()
+				fmt.Printf("%v ", t.Format(time.UnixDate))
+				// Print file/folder name
+				fmt.Printf(file.Name() + " ")
+				fmt.Printf("\n")
+			}
+		} else if all == false {
+			// no -a, don't print hidden files
+			for _, file := range files {
+				if !hiddenFile.MatchString(file.Name()) {
+					// Print permissions
+				fmt.Printf("%s ", file.Mode())
+				// Print owner fields
+				// This is not implemented as Windows returns -1 for
+				// the group and owner fields
+				// Print size
+				fmt.Printf("%12d ", file.Size())
+				// Print date
+				t := file.ModTime()
+				fmt.Printf("%v ", t.Format(time.UnixDate))
+				// Print file/folder name
+				fmt.Printf(file.Name() + " ")
+				fmt.Printf("\n")
+				}
+			}
 		}
-	} else {
-		// Long listing, human readable
-		for _, file := range files {
-			// Print permissions
-			fmt.Printf("%s ", file.Mode())
+	} else if human == true {
+		if all == true {
+			// Long listing, human readable
+			for _, file := range files {
+				// Print permissions
+				fmt.Printf("%s ", file.Mode())
 
-			// Print owner fields
-			// This is not implemented as Windows returns -1 for
-			// the group and owner fields
+				// Print owner fields
+				// This is not implemented as Windows returns -1 for
+				// the group and owner fields
 
-			// Convert file size format
-			formatSize := divide(file.Size())
-			// Print size
-			fmt.Printf("%6s ", formatSize)
+				// Convert file size format
+				formatSize := divide(file.Size())
+				// Print size
+				fmt.Printf("%6s ", formatSize)
 
-			// Print date
-			t := file.ModTime()
-			fmt.Printf("%v ", t.Format(time.UnixDate))
-			// Print file/folder name
-			fmt.Printf(file.Name() + " ")
-			fmt.Printf("\n")
+				// Print date
+				t := file.ModTime()
+				fmt.Printf("%v ", t.Format(time.UnixDate))
+				// Print file/folder name
+				fmt.Printf(file.Name() + " ")
+				fmt.Printf("\n")
+			}
+		} else if all == false {
+			// no -a, don't print hidden files
+			for _, file := range files {
+				if !hiddenFile.MatchString(file.Name()) {
+					// Print permissions
+				fmt.Printf("%s ", file.Mode())
+				// Print owner fields
+				// This is not implemented as Windows returns -1 for
+				// the group and owner fields
+
+				// Convert file size format
+				formatSize := divide(file.Size())
+				
+				// Print size
+				fmt.Printf("%6s ", formatSize)
+				// Print date
+				t := file.ModTime()
+				fmt.Printf("%v ", t.Format(time.UnixDate))
+				// Print file/folder name
+				fmt.Printf(file.Name() + " ")
+				fmt.Printf("\n")
+				}
+			}
 		}
 	}
 }
