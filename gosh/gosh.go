@@ -11,7 +11,6 @@ import (
 var (
 	// list that will hold all commands typed in the terminal
 	commandList []string
-
 	// tmpfile will hold a command queried by the "!" character.
 	// oldStdin will remember the traditional Stdin when it is
 	// switched to tmpfile (see 'exclamation.go').
@@ -20,12 +19,10 @@ var (
 	tmpfile  *os.File
 	oldStdin *os.File = os.Stdin
 	checker  bool     = false
-
 	// saves the position in commandHistory list where this session's
 	// commands start. That way, when the shell closes, we only copy this
 	// session's commands to the history file.
 	whereLeftOff int
-
 	// ComMap with be used to create a map of strings (command keys) to Commands (the functions)
 	ComMap = make(map[string]CommandFunc)
 )
@@ -33,7 +30,6 @@ var (
 type (
 	// CommandFunc will be used to treat functions of the given format as a type "Command"
 	CommandFunc func(args []string)
-
 	// Command : A command grouped with arguments for calling it
 	Command struct {
 		key  string
@@ -51,6 +47,10 @@ func main() {
 		fmt.Printf("%% ")
 		// Get the user's input
 		input := getInput()
+		//if carriage return is hit without anything typed in, restart the loop
+		if input == "" {
+			continue
+		}
 		// loads a command into commandList array
 		commandList = append(commandList, input)
 		// Split the input by instances of && (multiple commands to run)
@@ -82,7 +82,7 @@ func main() {
 // loads the contents of gosh_history.tmp into the commandList array
 func loadHistory() {
 	// open the gosh_history file for reading
-	historyFile, _ := os.OpenFile("gosh_history.tmp", os.O_RDONLY | os.O_CREATE | os.O_APPEND, 0755)
+	historyFile, _ := os.OpenFile("gosh_history.tmp", os.O_RDONLY|os.O_CREATE|os.O_APPEND, 0755)
 	scanner := bufio.NewScanner(historyFile)
 	for scanner.Scan() {
 		// append the command from the gosh_history.tmp and remove the
@@ -93,7 +93,6 @@ func loadHistory() {
 	// remember where the commands for this current session begin
 	whereLeftOff = len(commandList)
 }
-
 func getInput() string {
 	var (
 		// line will hold the command
@@ -121,20 +120,16 @@ func getInput() string {
 	os.Stdin = oldStdin
 	// Print out any errors
 	if e != nil {
-		fmt.Println("ooga")
 		fmt.Fprintln(os.Stderr, e)
 	}
-
 	// Trim \r\n for Windows
 	if runtime.GOOS == "windows" {
 		line = strings.TrimRight(line, "\r\n")
 	} else {
 		line = strings.TrimRight(line, "\n")
 	}
-
 	return line
 }
-
 func parseCommand(line string) Command {
 	// Trim any leading and trailing spaces resulting from '&&' or '|' splits
 	// This has to be done to process multiple commands. It just does.
@@ -147,7 +142,6 @@ func parseCommand(line string) Command {
 	// Return command and arguments
 	return Command{command, args}
 }
-
 func execute(command Command) {
 	// Route the command to call the proper function
 	if com, valid := ComMap[command.key]; valid {

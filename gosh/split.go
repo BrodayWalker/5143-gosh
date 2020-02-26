@@ -2,7 +2,7 @@ package main
 
 import (
 	"bufio"
-	"io"
+	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -14,7 +14,7 @@ func init() {
 	ComMap["split"] = Split
 }
 
-var lines, size, chunks, length int
+var lines, size, chunks, length, counter int = 0, 0, 0, 0, 0
 var file, file2 *os.File
 var err error
 
@@ -29,7 +29,8 @@ var err error
 //		split [option](-l) [option value](<n>) [input](infile)
 func Split(args []string) {
 	//loop will iterate through all elements in args, which will will be flags, values, and/or input files
-	for word := range args {
+	for word := 0; word < len(args); word++ {
+		fmt.Println("here is the index of args:", word)
 		//switch cases will only cover single-dashed flags for now
 		switch string(args[word][0]) {
 		//if there is a flag, it's going to be an l flag
@@ -44,17 +45,17 @@ func Split(args []string) {
 				printByLines(lines, args[word])
 				args = args[word:]
 			} else {
-				counter := 0
-				file, err = os.Open(args[word]) //open file from input string array
+				counter = 0
+				file, err = os.OpenFile(args[word], os.O_RDONLY, 0755) //open file from input string array
 				if err != nil {
 					log.Fatal(err)
 				}
 				fi, _ := file.Stat()
 				//this variable will hold the sections of data we will be writing to separate files
 				data := make([]byte, fi.Size()/10)
-				for err != io.EOF {
+				for counter < 10 {
 					//create a "sub-file" with the same name as the parent but with a counter value appended to the front
-					file2, err = os.Create(strconv.Itoa(counter) + filepath.Base(args[word]))
+					file2, err = os.OpenFile(strconv.Itoa(counter)+filepath.Base(args[word]), os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0755)
 					if err != nil {
 						log.Fatal(err)
 					}
@@ -63,6 +64,7 @@ func Split(args []string) {
 					//write contents of 'data' to 'file2'
 					file2.Write(data)
 					file2.Close()
+					counter++
 				}
 				file.Close()
 			}
