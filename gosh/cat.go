@@ -45,7 +45,7 @@ func Cat(args []string) {
 			ctext, _ = reader.ReadString('\n')
 			fmt.Println(ctext)
 		}
-		//if cat has arguments, create a temporary file. We will use this to 
+		//if cat has arguments, create a temporary file. We will use this to
 		//store contents of the input files.
 	} else {
 		tempFile, err := os.Create("temp.txt")
