@@ -143,26 +143,27 @@ func ArgSplitter(args []string) (argList []string, flags []string) {
 	return argList, flags
 }
 
-func MergeQuotedArgs(args []string) []string{
-    mergedArgs := make([]string, 0)
-    for i, arg := range args {
-        if string(arg[0]) != "\"" {
-            mergedArgs = append(mergedArgs, arg)
-        }else{
-            combinedArg := arg
-            ni := i
-            narg := arg
-            for (string(combinedArg[len(combinedArg)-1]) != "\"" || string(combinedArg[len(arg)-2]) == "\\") && i < len(args){
-                ni += 1
-                narg = args[ni]
-                combinedArg += " " + narg
-            }
-            mergedArgs = append(mergedArgs, combinedArg)
+// MergeQuotedArgs ..
+func MergeQuotedArgs(args []string) []string {
+	mergedArgs := make([]string, 0)
+	for i, arg := range args {
+		if string(arg[0]) != "\"" {
+			mergedArgs = append(mergedArgs, arg)
+		} else {
+			combinedArg := arg
+			ni := i
+			narg := arg
+			for (string(combinedArg[len(combinedArg)-1]) != "\"" || string(combinedArg[len(arg)-2]) == "\\") && i < len(args) {
+				ni++
+				narg = args[ni]
+				combinedArg += " " + narg
+			}
+			mergedArgs = append(mergedArgs, combinedArg)
 			// Remove elements that were combined
-            numels := ni - i
+			numels := ni - i
 			copy(args[i:], args[i+numels:]) // Shift left 2 indices
 			args = args[:len(args)-numels]  // Truncate
-        }
-    }
-    return mergedArgs
+		}
+	}
+	return mergedArgs
 }
