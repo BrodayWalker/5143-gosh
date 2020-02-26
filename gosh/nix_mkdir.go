@@ -35,7 +35,7 @@ func Mkdir(args []string) {
 		fmt.Println(totalPath)
 
 		// Make the directory using the Mkdir system call (no lower level option)
-		errPath := syscall.Mkdir(totalPath, 0)
+		errPath := syscall.Mkdir(totalPath, 0755)
 
 		if errPath == syscall.EEXIST {
 			fmt.Println("Directory already exists.")
