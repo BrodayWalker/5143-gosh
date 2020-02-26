@@ -138,9 +138,6 @@ func ArgSplitter(args []string) (argList []string, flags []string) {
 				argList = append(argList, args[i])
 			}
 		}
-	} else {
-		argList = append(argList, "")
-		flags = append(flags, "")
 	}
 
 	return argList, flags
