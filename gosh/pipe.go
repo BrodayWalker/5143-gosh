@@ -7,18 +7,34 @@ import (
 )
 
 // PipeLine :
-// Special version of the execute function which takes a list of Commands, then
-// for each Command, sends it's output to a file and uses that file as the first
-// arg of the next command.
+// Takes a list of Commands, then for each Command, sets it's output to a
+// file and uses that file as the first arg of the next command, executing
+// them all in sequence.
+// Notes:
+//   - Actual command calling in handled in Execute()
+//   - In the event of an input redirection in use with Pipes, redirect is
+//     handled by Execute(), which will in turn call RedirectAndExecute()
 func PipeLine(commands []Command) {
 
 	// stdout backup
 	stdout := os.Stdout
 	// error variable
 	var err error
-	// Path to the pipe file (invisible files)
-	inPipePath := " "
-	outPipePath := "  "
+
+	// Path to the pipe file
+	dir := os.TempDir()
+	outPipeName := "pipe.out.tmp"
+	if err != nil {
+		fmt.Println("Error getting working directory: ", err)
+		return
+	}
+	outPipePath := dir + "/" + outPipeName
+	inPipeName := "pipe.tmp"
+	if err != nil {
+		fmt.Println("Error getting working directory: ", err)
+		return
+	}
+	inPipePath := dir + "/" + inPipeName
 
 	// For each command in the array
 	for i, pipe := range commands {
@@ -34,16 +50,13 @@ func PipeLine(commands []Command) {
 			}
 		}
 
-		// If the Command is valid
-		if com, valid := ComMap[pipe.key]; valid {
-			// If this isn't the first command
-			if i > 0 {
-				// Add the pipe file to the args (at the front)
-				pipe.args = frAddStr(pipe.args, inPipePath)
-			}
-			// Execute the command with its arguments
-			com(pipe.args)
+		// If this isn't the first command
+		if i > 0 {
+			// Add the pipe file to the args (at the front)
+			pipe.args = frAddStr(pipe.args, inPipePath)
 		}
+		// Execute the command with its arguments
+		Execute(pipe)
 
 		// After processing each command, if this isn't the last command
 		if i < len(commands)-1 {

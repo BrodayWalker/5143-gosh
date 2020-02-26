@@ -32,8 +32,11 @@ type (
 	CommandFunc func(args []string)
 	// Command : A command grouped with arguments for calling it
 	Command struct {
-		key  string
-		args []string
+		key        string
+		args       []string
+		infile     *string
+		outfile    *string
+		appendMode bool
 	}
 )
 
@@ -73,7 +76,7 @@ func main() {
 				// Standardize command
 				command.key = strings.ToLower(command.key)
 				// Execute the command in the standard way
-				execute(command)
+				Execute(command)
 			}
 		}
 	}
@@ -130,6 +133,7 @@ func getInput() string {
 	}
 	return line
 }
+
 func parseCommand(line string) Command {
 	// Trim any leading and trailing spaces resulting from '&&' or '|' splits
 	// This has to be done to process multiple commands. It just does.
@@ -139,34 +143,66 @@ func parseCommand(line string) Command {
 	symbols := strings.Split(line, " ")
 	command := symbols[0]
 	args := symbols[1:]
+	// Set all redirection items to nil by default
+	var ifile *string = nil
+	var ofile *string = nil
+	appendMode := false
+	// Get any input redirection
+	for i, arg := range args {
+		if arg == "<" {
+			ifile = new(string)
+			*ifile = args[i+1]
+			// Remove element at i
+			copy(args[i:], args[i+2:]) // Shift left 2 indices
+			args = args[:len(args)-2]  // Truncate
+		}
+		if arg == ">" {
+			ofile = new(string)
+			*ofile = args[i+1]
+			// Remove element at i
+			copy(args[i:], args[i+2:]) // Shift left 2 indices
+			args = args[:len(args)-2]  // Truncate
+		} else if arg == ">>" {
+			ofile = new(string)
+			*ofile = args[i+1]
+			appendMode = true
+			// Remove element at i
+			copy(args[i:], args[i+2:]) // Shift left 2 indices
+			args = args[:len(args)-2]  // Truncate
+		}
+	}
 	// Return command and arguments
-	return Command{command, args}
+	return Command{command, args, ifile, ofile, appendMode}
 }
-func execute(command Command) {
-	// Route the command to call the proper function
-	if com, valid := ComMap[command.key]; valid {
-		com(command.args)
-	} else if string(command.key[0]) == "!" {
-		Exclamation(command.key[1:])
-	} else if command.key == "exit" {
-		saveHistory()
-		os.Exit(0)
-	} else if command.key == "test_pipe" {
-		// Make a list of command lines just for testing
-		comms := []Command{
-			Command{
-				"cat",
-				[]string{"README.md"}},
-			Command{
-				"head",
-				[]string{}},
-			Command{
-				"wc",
-				[]string{}}}
-		// Run those commands in a pipe
-		PipeLine(comms)
+
+// Execute
+// Runs a command if it is a valid command defined in the ComMap
+// or if it is one of a few special commands such as `exit`.
+// Notes:
+// - In the event of redirection, this function calls a special
+//     execution function, RedirectAndExecute()
+// - This is not to be confused with piping, which is handled by
+//     a completely different function PipeLine() which in turn
+//     calls Execute() on each element of the pipeline (after
+//     which individual elements may also be redirected)
+func Execute(command Command) {
+	// If any redirection has occured
+	if command.infile != nil || command.outfile != nil {
+		// Run with redirected input/output
+		RedirectAndExecute(command)
 	} else {
-		fmt.Println("Command not found.")
+		// No redirection
+		// Route the command to call the proper function
+		if com, valid := ComMap[command.key]; valid {
+			com(command.args)
+		} else if string(command.key[0]) == "!" {
+			Exclamation(command.key[1:])
+		} else if command.key == "exit" {
+			saveHistory()
+			os.Exit(0)
+		} else {
+			fmt.Println("Command not found.")
+		}
 	}
 }
 
