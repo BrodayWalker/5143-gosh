@@ -26,18 +26,15 @@ func Mkdir(args []string) {
 	} else {
 		// The folder name should be argument 0
 		folder := args[0]
-		fmt.Printf("Folder we want to make: %v\n", folder)
 
 		// Make path to folder
 		absPath, absErr := filepath.Abs(folder)
 		if absErr != nil {
 			fmt.Println(absErr)
-		} else {
-			fmt.Printf("Absolute path to new potential folder: %v\n", absPath)
 		}
 
 		// Try to make the folder
-		createErr := os.Mkdir(absPath, 0777)
+		createErr := os.Mkdir(absPath, 0700)
 		if createErr != nil {
 			fmt.Println(createErr)
 		}

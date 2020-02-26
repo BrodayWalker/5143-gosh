@@ -6,18 +6,15 @@ import (
 	"path/filepath"
 )
 
-func init(){
-    // Add this command's function to the command mapping
-    ComMap["rm"] = Rm
+func init() {
+	// Add this command's function to the command mapping
+	ComMap["rm"] = Rm
 }
 
 // Rm removes a folder or file
 func Rm(args []string) {
 	if len(args) != 0 {
 		argList, flags := ArgSplitter(args)
-		// Debug
-		fmt.Println(argList)
-		fmt.Println(flags)
 
 		// Get absolute path
 		path, absErr := filepath.Abs(argList[0])
@@ -53,9 +50,7 @@ func Rm(args []string) {
 				if (rFlag == true && fFlag == true) || (rFlag == true && fFlag == false) {
 					os.RemoveAll(path)
 				}
-			
 			}
 		}
 	}
-		
 }
