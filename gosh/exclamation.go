@@ -23,7 +23,7 @@ func Exclamation(location string) {
 		checker = true
 		singleCommand := commandList[element]
 		//open a temp file to store the command. If the temp file exists, truncate it
-		tmpfile, _ = os.OpenFile("temp.tmp", os.O_TRUNC|os.O_CREATE, 0755)
+		tmpfile, _ = os.OpenFile("temp.tmp", os.O_RDWR|os.O_TRUNC|os.O_CREATE, 0755)
 		tmpfile.WriteString(singleCommand + "\n")
 		tmpfile.Seek(0, io.SeekStart)
 		fmt.Println(commandList[element])
