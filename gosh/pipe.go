@@ -7,9 +7,13 @@ import (
 )
 
 // PipeLine :
-// Special version of the execute function which takes a list of Commands, then
-// for each Command, sends it's output to a file and uses that file as the first
-// arg of the next command.
+// Takes a list of Commands, then for each Command, sets it's output to a
+// file and uses that file as the first arg of the next command, executing
+// them all in sequence.
+// Notes:
+//   - Actual command calling in handled in Execute()
+//   - In the event of an input redirection in use with Pipes, redirect is
+//     handled by Execute(), which will in turn call RedirectAndExecute()
 func PipeLine(commands []Command) {
 
 	// stdout backup

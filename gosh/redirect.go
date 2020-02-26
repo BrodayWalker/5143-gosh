@@ -5,10 +5,10 @@ import (
 	"os"
 )
 
-// Redirect :
+// RedirectAndExecute :
 // Special version of the execute function which takes a command and runs it,
 // directing its input and output to files
-func Redirect(command Command) {
+func RedirectAndExecute(command Command) {
 
 	// Backups
 	stdin := os.Stdin

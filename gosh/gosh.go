@@ -175,11 +175,21 @@ func parseCommand(line string) Command {
 	return Command{command, args, ifile, ofile, appendMode}
 }
 
+// Execute
+// Runs a command if it is a valid command defined in the ComMap
+// or if it is one of a few special commands such as `exit`.
+// Notes:
+// - In the event of redirection, this function calls a special
+//     execution function, RedirectAndExecute()
+// - This is not to be confused with piping, which is handled by
+//     a completely different function PipeLine() which in turn
+//     calls Execute() on each element of the pipeline (after
+//     which individual elements may also be redirected)
 func Execute(command Command) {
 	// If any redirection has occured
 	if command.infile != nil || command.outfile != nil {
 		// Run with redirected input/output
-		Redirect(command)
+		RedirectAndExecute(command)
 	} else {
 		// No redirection
 		// Route the command to call the proper function
