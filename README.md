@@ -17,6 +17,7 @@
 | cat         | [cat.go](gosh/cat.go)                 | Corbin | :100: |
 | cd          | [cd.go](gosh/cd.go)                   | Broday | :100: |
 | chmod       | [chmod.go](gosh/chmod.go)             | Corbin | :x:   |
+| cp          | [cp.go](gosh/cp.go)                   | Corbin | :100: |
 | echo        | [echo.go](gosh/echo.go)               | Broday | :100: |
 | exclamation | [exclamation.go](gosh/exclamation.go) | Corbin | :100: |
 |             | [gosh.go](gosh/gosh.go)               | All    | :100: |
@@ -29,7 +30,7 @@
 | pipe        | [pipe.go](gosh/pipe.go)               | Jeremy | :100: |
 | pwd         | [pwd.go](gosh/pwd.go)                 | Broday | :100: |
 | rm          | [rm.go](gosh/rm.go)                   | Broday | :100: |
-| split       | [split.go](gosh/split.go)             | Corbin | 99% |
+| split       | [split.go](gosh/split.go)             | Corbin | 99%   |
 | tail        | [tail.go](gosh/tail.go)               | Broday | :100: |
 | touch       | [touch.go](gosh/touch.go)             | Broday | :100: |
 |             | [utils.go](gosh/utils.go)             | Broday | :100: |
