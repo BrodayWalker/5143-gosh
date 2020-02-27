@@ -13,6 +13,7 @@ import (
 var helpDict = map[string]string{
 	"cat":         "Cat will either concatenate a file and print it to std out or intake\ntwo or more files and print them as if they were concatenated. If Cat was called without\nany arguments, it will take input from Stdin and just output it to Stdout.\nUsage:\n\tcat\n\tcat file\n\tcat file1 file2 fileN",
 	"cd":          "Cd changes directories.\nUsage:\n\tcd path/to/directory\n\tcd ..\n\tcd ~",
+	"cp":          "Cp will copy a file or a set of files into another location. This function only\nworks if the folders on the destination path exist and the paths are Unix-formatted,\ni.e.\n\tpath/to/destination\n\t\tNOT\n\tpath\\to\\destination OR path\\\\to\\\\destination\nUsage:\n\tcp path/to/file path/to/copy/to\n\tcp path/to/file1 path/to/file2 path/to/fileN path/to/copy/to",
 	"chmod":       "Chmod changes the mode/permissions of a file or directory.\nUsage:\n\tchmod file mode",
 	"echo":        "Echo repeats what is typed after the command.\nUsage:\n\techo statement",
 	"exclamation": "Exclamation will return the n-th command from the commandList and execute\nit automatically. If the command does not exist, it returns an error message and the\nshell continues like normal.\nIn this function, location is the command number that follows the\n'!' character.\nUsage:\n\t![instruction #]",
