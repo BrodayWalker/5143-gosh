@@ -5,12 +5,14 @@ import (
 	"regexp"
 )
 
-func init(){
-    // Add this command's function to the command mapping
-    ComMap["echo"] = Echo
+func init() {
+	// Add this command's function to the command mapping
+	ComMap["echo"] = Echo
 }
 
-// Echo ...
+// Echo repeats what is typed after the command
+// Usage:
+//				echo statement
 func Echo(args []string) {
 	// Compile the expression to test against
 	// A flag must be in args[0] or it will not be caught
