@@ -1,10 +1,10 @@
-// +build windows
+// +build !windows
 
 package main
 
 import (
 	"fmt"
-	"golang.org/x/sys/windows"
+	"golang.org/x/sys/unix"
 	"strconv"
 )
 
@@ -22,7 +22,7 @@ func Chmod(args []string) {
 		fmt.Println("Error with mode: ", err)
 	}
 
-	err = windows.Chmod(filename, uint32(mode))
+	err = unix.Chmod(filename, uint32(mode))
 	if err != nil {
 		fmt.Println("Error changing permissions: ", err)
 	}

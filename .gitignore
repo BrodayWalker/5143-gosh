@@ -10,6 +10,7 @@ tester/
 # Executables & Outputs
 *.exe
 *.o
+*.txt
 
 ### Go ###
 # Binaries for programs and plugins
@@ -62,3 +63,4 @@ $RECYCLE.BIN/
 *.lnk
 
 tester/history.go
+.DS_Store
