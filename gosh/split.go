@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"log"
 	"os"
 	"path/filepath"
@@ -22,15 +21,12 @@ var err error
 // individual files depending on arguments. If no arguments are sent in
 // the file is divided into 10 parts (well, a bug makes it divide into 11 parts,
 // but the 11th file is a duplicate of the 10th. If -l <n> is used,
-// the file is divided into parts with n number of lines each. If this
-// argument is included, the function Split will successfully execute,
-// but the shell will crash. Oh well.
+// the file is divided into parts with n number of lines each.
 // Usage:
 //		split [option](-l) [option value](<n>) [input](infile)
 func Split(args []string) {
 	//loop will iterate through all elements in args, which will will be flags, values, and/or input files
 	for word := 0; word < len(args); word++ {
-		fmt.Println("here is the index of args:", word)
 		//switch cases will only cover single-dashed flags for now
 		switch string(args[word][0]) {
 		//if there is a flag, it's going to be an l flag

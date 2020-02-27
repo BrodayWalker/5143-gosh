@@ -8,6 +8,34 @@ import (
 	"strings"
 )
 
+// The helpDict hold all commands' help info to be printed whenever 'cmd --help' is entered in the shell
+//--------------------------------------------------------------------------------------*-----------------------------------------------------------------------------------------*-----------------------------------------------------------------------------------------*-----------------------------------------------------------------------------------------*-----------------------------------------------------------------------------------------*
+var helpDict = map[string]string{
+	"cat":         "Cat will either concatenate a file and print it to std out or intake\ntwo or more files and print them as if they were concatenated. If Cat was called without\nany arguments, it will take input from Stdin and just output it to Stdout.\nUsage:\n\tcat\n\tcat file\n\tcat file1 file2 fileN",
+	"cd":          "Cd changes directories.\nUsage:\n\tcd path/to/directory\n\tcd ..\n\tcd ~",
+	"chmod":       "Chmod changes the mode/permissions of a file or directory.\nUsage:\n\tchmod file mode",
+	"echo":        "Echo repeats what is typed after the command.\nUsage:\n\techo statement",
+	"exclamation": "Exclamation will return the n-th command from the commandList and execute\nit automatically. If the command does not exist, it returns an error message and the\nshell continues like normal.\nIn this function, location is the command number that follows the\n'!' character.\nUsage:\n\t![instruction #]",
+	"gosh":        "Gosh is a sophisticated shell simulation developed in GoLang by\n\tBroday Walker (team leader)\n\tJeremy Glebe\n\tCorbin Matamoros\nfor the Advanced Operating System class at Midwestern State University.",
+	"grep":        "",
+	"head":        "Head prints the first 10 lines of a file or the number of lines\nspecified after the -n flag.\nUsage:\n\thead file\n\thead -n [# of lines] file",
+	"help":        "Help prints command and command usage information.\nUsage:\n\thelp command",
+	"history":     "History prints all commands executed (except Exit), syntactically correct or not.\nUsage:\n\thistory",
+	"less":        "Less will print out the contents of an input file one page at a time,\nwrapping around words and in between words if the input file line has more characters\nthan the terminal has width.\nUsage:\n\tless <inputfile>",
+	"ls":          "Ls lists all files and directories in the currect folder.\nUsage:\n\tls\n\tls -a\n\tls -l\n\tls -h",
+	"mkdir":       "Mkdir makes a new directory. Currently, the only supported functionality\nincludes making a folder in the current directory with a folder name supplied by the\nuser as the first argument.\nUsage\n\tmkdir path/to/directory/directory_name",
+	"mv":          "Mv moves the file given in the first argument to the location of the\nsecond argument. Mv also renames files.\nUsage:\n\tmv path/to/file path/to/desired/location",
+	"nix_mkdir":   "",
+	"mix_mv":      "",
+	"pipe":        "Pipeline takes a list of Commands, then for each Command, sets its output\nto a file and uses that file as the first arg of the next command, executing them all\nin sequence.\n\nNotes:\n\t- Actual command calling is handled in Execute()\n\t- In the event of an input redirection in use with Pipes, redirect is\n\thandled by Execute(), which will in turn call RedirectAndExecute()\nUsage:\n\thistory.go | wc\n\tcat file1 file2 > outfile | head -n 10 outfile",
+	"pwd":         "Pwd prints the working directory.\nUsage:\n\tpwd",
+	"rm":          "Rm removes a folder or file.\nUsage:\n\trm file\n\trm -r folder\n\trm -rf folder",
+	"sort":        "Sort takes a file or set of files and sorts them by line.\nUsage:\n\rsort file1\n\tsort file1 file2 fileN",
+	"split":       "Split will divide an input file into a certain number of individual files\ndepending on arguments. If no arguments are sent in the file is divided into 10 parts.\nIf -l <n> is used, the file is divided into parts with n number of lines each.\nUsage:\n\tsplit [option](-l) [option value](<n>) [input](infile)",
+	"tail":        "Tail prints the final n number of lines of a file. By defualt, n is set\nto 10. At some point, build a way to handle being passed an absolute path (split on '\\').\nCurrently only works if the file is in the current working directory.\nUsage:\n\ttail file\n\ttail -n [# of lines] file",
+	"touch":       "Touch changes the access and/or modification timestamps of the specified files.\nUsage:\n\ttouch file",
+	"wc":          "Wc will output the number of characters, words, and lines in a file.\nUsage:\n\twc file"}
+
 var (
 	// list that will hold all commands typed in the terminal
 	commandList []string
@@ -193,7 +221,9 @@ func Execute(command Command) {
 	} else {
 		// No redirection
 		// Route the command to call the proper function
-		if com, valid := ComMap[command.key]; valid {
+		if len(command.args) > 0 && command.args[0] == "--help" { // display the commands help info
+			help(command.key)
+		} else if com, valid := ComMap[command.key]; valid {
 			com(command.args)
 		} else if string(command.key[0]) == "!" {
 			Exclamation(command.key[1:])
@@ -220,4 +250,14 @@ func saveHistory() {
 		historyFile.WriteString(commandList[i] + "\n")
 	}
 	historyFile.Close()
+}
+
+// help will display a command's help info or an error if a unsupported command
+// was entered
+func help(args string) {
+	if info, exists := helpDict[args]; exists {
+		fmt.Println(info)
+	} else {
+		fmt.Println("This command is not supported in this shell.")
+	}
 }
