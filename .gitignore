@@ -10,6 +10,7 @@ tester/
 # Executables & Outputs
 *.exe
 *.o
+*.txt
 
 ### Go ###
 # Binaries for programs and plugins
