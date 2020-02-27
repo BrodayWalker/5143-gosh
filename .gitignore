@@ -63,3 +63,4 @@ $RECYCLE.BIN/
 *.lnk
 
 tester/history.go
+.DS_Store
