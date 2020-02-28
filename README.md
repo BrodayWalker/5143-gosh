@@ -48,6 +48,9 @@
 ```
 /5143-gosh
 ├── README.md
+├── assets
+|   ├── trump
+|   ├── trump.wav
 ├── gosh
 │   ├── cat.go
 │   ├── cd.go
