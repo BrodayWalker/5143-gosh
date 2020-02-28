@@ -16,23 +16,30 @@
 |             | [README.md](README.md)                | Broday | :100: |
 | cat         | [cat.go](gosh/cat.go)                 | Corbin | :100: |
 | cd          | [cd.go](gosh/cd.go)                   | Broday | :100: |
-| chmod       | [chmod.go](gosh/chmod.go)             | Corbin | :x:   |
+| chmod       | [chmod.go](gosh/chmod.go)             | Corbin |  :x:  |
 | cp          | [cp.go](gosh/cp.go)                   | Corbin | :100: |
 | echo        | [echo.go](gosh/echo.go)               | Broday | :100: |
 | exclamation | [exclamation.go](gosh/exclamation.go) | Corbin | :100: |
 |             | [gosh.go](gosh/gosh.go)               | All    | :100: |
+| grep        | [grep.go](gosh/grep.go)               | Jeremy | :100: |
 | head        | [head.go](gosh/head.go)               | Broday | :100: |
 | history     | [history.go](gosh/history.go)         | Corbin | :100: |
+| less        | [less.go](gosh/less.go)               | Corbin | :100: |
 | ls          | [ls.go](gosh/ls.go)                   | Broday | :100: |
 | mkdir       | [mkdir.go](gosh/mkdir.go)             | Broday | :100: |
+| mv          | [mv.go](gosh/mv.go)                   | Broday | :100: |
+| nix_chmod   | [nix_chmod.go](gosh/nix_chmod.go)     | Jeremy | :100: |
 | nix_mkdir   | [nix_mkdir.go](gosh/nix_mkdir.go)     | Jeremy | :100: |
 | nix_mv      | [nix_mv.go](gosh/nix_mv.go)           | Jeremy | :100: |
 | pipe        | [pipe.go](gosh/pipe.go)               | Jeremy | :100: |
 | pwd         | [pwd.go](gosh/pwd.go)                 | Broday | :100: |
+| redirect    | [redirect.go](gosh/redirect.go)       | Jeremy | :100: |
 | rm          | [rm.go](gosh/rm.go)                   | Broday | :100: |
-| split       | [split.go](gosh/split.go)             | Corbin | 99%   |
+| sort        | [sort.go](gosh/sort.go)               | Corbin |  50%  |
+| split       | [split.go](gosh/split.go)             | Corbin | :100: |
 | tail        | [tail.go](gosh/tail.go)               | Broday | :100: |
 | touch       | [touch.go](gosh/touch.go)             | Broday | :100: |
+| trump       | [trump.go](gosh/trump.go)             | Jeremy | :100: |
 |             | [utils.go](gosh/utils.go)             | Broday | :100: |
 | wc          | [wc.go](gosh/wc.go)                   | Jeremy | :100: |
 
@@ -45,22 +52,28 @@
 │   ├── cat.go
 │   ├── cd.go
 │   ├── chmod.go
+│   ├── cp.go
 │   ├── echo.go
 │   ├── exclamation.go
 │   ├── gosh.go
+│   ├── grep.go
 │   ├── head.go
 │   ├── history.go
+│   ├── less.go
 │   ├── ls.go
 │   ├── mkdir.go
 │   ├── mv.go
+│   ├── nix_chmod.go
 │   ├── nix_mkdir.go
 │   ├── nix_mv.go
 │   ├── pipe.go
 │   ├── pwd.go
 │   ├── rm.go
+│   ├── sort.go
 │   ├── split.go
 │   ├── tail.go
 │   ├── touch.go
+│   ├── trump.go
 │   ├── utils.go
 │   ├── wc.go
 ```
